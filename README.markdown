@@ -38,6 +38,6 @@ Either download the zip from [http://stc.wiffbi.com/](http://stc.wiffbi.com/) an
 	In Live’s Preferences go to the *MIDI Sync* tab and select *Selected Track Control* in the dropdown list of available Control Surfaces. As MIDI Input select your controller’s MIDI-port. A MIDI Output is not needed.
 	
 	**Note:** There is an accompanying App for Mac OS X called **![App-Icon](http://stc.wiffbi.com/img/icon-16.png) Selected Track Control**. This app transforms keyboard shortcuts into MIDI messages, which are sent on the virtual MIDI-port called *STC Virtual IN*.
-	More information and the app itself are on the [project’s homepage](http://stc.wiffbi.com/)
+	More information and the app itself are on the [project’s homepage.](http://stc.wiffbi.com/)
 
 
