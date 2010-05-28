@@ -49,4 +49,4 @@ Customize MIDI messages
 
 The MIDI message, which **Selected Track Control** reacts upon, are defined in settings.py
 
-You can change them there, but be careful not to use the same note- or CC-number twice as unexpected behaviour might be the result.
+You can change them there to match your needs, but be careful not to use the same note- or CC-number twice as this might result in unexpected behaviour.
