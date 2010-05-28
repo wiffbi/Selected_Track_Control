@@ -20,6 +20,9 @@ Among the mapped functionality is:
 For full reference see [MIDI Implementation Chart.](http://stc.wiffbi.com/midi-implementation-chart.html)
 
 
+**Note:** There is an accompanying app for Mac OS X called **![App-Icon](http://stc.wiffbi.com/img/icon-16.png) Selected Track Control**. This app transforms global keyboard shortcuts into MIDI messages, which are sent to Ableton Live (and this *MIDI Remote Script*) on a virtual MIDI-port (created by the app automatically itself). **This allows instant keyboard-control of lots of features in Ableton Live** that either would require prior, manual configuration of each Live-set or aren't possible at all (such as using the same keyboard shortcut for e.g. the mute button – but always on the selected track).
+
+More information and the app itself can be found on the [project’s homepage.](http://stc.wiffbi.com/)
 
 
 Installation
@@ -37,9 +40,6 @@ Either download the zip from [http://stc.wiffbi.com/](http://stc.wiffbi.com/) an
 
 	In Live’s Preferences go to the *MIDI Sync* tab and select *Selected Track Control* in the dropdown list of available Control Surfaces. As MIDI Input select your controller’s MIDI-port. A MIDI Output is not needed.
 	
-	**Note:** There is an accompanying App for Mac OS X called **![App-Icon](http://stc.wiffbi.com/img/icon-16.png) Selected Track Control**. This app transforms keyboard shortcuts into MIDI messages, which are sent on the virtual MIDI-port called *STC Virtual IN*.
-	More information and the app itself are on the [project’s homepage.](http://stc.wiffbi.com/)
-
 
 
 
