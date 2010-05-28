@@ -41,3 +41,12 @@ Either download the zip from [http://stc.wiffbi.com/](http://stc.wiffbi.com/) an
 	More information and the app itself are on the [project’s homepage.](http://stc.wiffbi.com/)
 
 
+
+
+
+Customize MIDI messages
+-----------------------
+
+The MIDI message, which **Selected Track Control** reacts upon, are defined in settings.py
+
+You can change them there, but be careful not to use the same note- or CC-number twice as unexpected behaviour might be the result.
