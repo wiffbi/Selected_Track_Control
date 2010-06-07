@@ -201,7 +201,7 @@ class MixerControl:
 	
 	def increase_pan_by(self, d_value):
 		param = self.song.view.selected_track.mixer_device.panning
-		param.value = max(0.0, min(1.0, param.value + (d_value/100.0)))
+		param.value = max(-1.0, min(1.0, param.value + (d_value/100.0)))
 	
 	def reset_pan(self, velocity):
 		self.song.view.selected_track.mixer_device.panning.value = settings.PAN_CENTER_VALUE
