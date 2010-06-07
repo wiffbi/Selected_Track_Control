@@ -1,6 +1,9 @@
 Selected Track Control for Ableton Live
 =======================================
 
+Current version is 1.0.1 – released June 7, 2010.
+
+
 Control the currently selected track via common MIDI messages
 -------------------------------------------------------------
 
@@ -25,6 +28,17 @@ For full reference see [MIDI Implementation Chart.](http://stc.wiffbi.com/midi-i
 More information and the app itself can be found on the [project’s homepage.](http://stc.wiffbi.com/)
 
 
+
+
+
+
+System Requirements
+-------------------
+Ableton Live 7
+
+
+
+
 Installation
 ------------
 
@@ -44,9 +58,33 @@ Either download the zip from [http://stc.wiffbi.com/](http://stc.wiffbi.com/) an
 
 
 
+
+
 Customize MIDI messages
 -----------------------
 
 The MIDI message, which **Selected Track Control** reacts upon, are defined in settings.py
 
 You can change them there to match your needs, but be careful not to use the same note- or CC-number twice as this might result in unexpected behaviour.
+
+
+
+
+
+
+
+
+Changelog
+---------
+
+### Version 1.0.1 (released June 7, 2010) - current version
+
+This is a maintenance release. The following items were fixed and/or added:
+
+*	fixed panning issue (panning left was broken)
+*	added version numbers and changelog
+
+
+### Version 1.0 (released May 28, 2010)
+
+First public release.
