@@ -1,6 +1,6 @@
 import Live
 
-from consts import *
+import MIDI
 import settings
 #from Logging import log
 
@@ -21,9 +21,21 @@ class SelectedTrackControl:
 		# mappings for registered MIDI notes/CCs
 		self.midi_callbacks = {}
 		
+		# lookup object for fast lookup of cc to mode
+		self.midi_cc_to_mode = {}
+		list_type = type((1,2));
+		for v in settings.mapping.values():
+			if type(v) == list_type:
+				for command in v:
+					if isinstance(command, CC):
+						 self.midi_cc_to_mode[command.key] = command.mode
+			else:
+				if isinstance(v, CC):
+					self.midi_cc_to_mode[v.key] = v.mode
+		
 		self.components = (
-			SessionControl(c_instance, self),
-			MixerControl(c_instance, self),
+			#SessionControl(c_instance, self),
+			#MixerControl(c_instance, self),
 			GlobalControl(c_instance, self),
 		)
 		
@@ -32,8 +44,9 @@ class SelectedTrackControl:
 	
 	def suggest_map_mode(self, cc_no):
 		#log("suggest_map_mode")
-		return Live.MidiMap.MapMode.relative_two_compliment
-		#return Live.MidiMap.MapMode.absolute
+		if cc_no in self.midi_cc_to_mode:
+			return self.midi_cc_to_mode[cc_no]
+		return MIDI.ABSOLUTE # see MIDI.py for definitions of modes
 	
 	
 	def disconnect(self):
@@ -60,11 +73,14 @@ class SelectedTrackControl:
 		#log("SelectedTrackControl::build_midi_map")
 		script_handle = self.c_instance.handle()
 		
-		for note in self.midi_callbacks.get(NOTEON_STATUS,{}).keys():
-			Live.MidiMap.forward_midi_note(script_handle, midi_map_handle, settings.MIDI_CHANNEL, note)
+		for channel in range(16):
+			callbacks = self.midi_callbacks.get(channel, {})
 			
-		for cc in self.midi_callbacks.get(CC_STATUS,{}).keys():
-			Live.MidiMap.forward_midi_cc(script_handle, midi_map_handle, settings.MIDI_CHANNEL, cc)
+			for note in callbacks.get(MIDI.NOTEON_STATUS,{}).keys():
+				Live.MidiMap.forward_midi_note(script_handle, midi_map_handle, channel, note)
+			
+			for cc in callbacks.get(MIDI.CC_STATUS,{}).keys():
+				Live.MidiMap.forward_midi_cc(script_handle, midi_map_handle, channel, cc)
 	
 	
 	
@@ -72,18 +88,19 @@ class SelectedTrackControl:
 	# called from Live when MIDI messages are received
 	def receive_midi(self, midi_bytes):
 		#log("receive_midi")
-		channel = (midi_bytes[0] & CHAN_MASK)
-		status = (midi_bytes[0] & STATUS_MASK)
+		channel = (midi_bytes[0] & MIDI.CHAN_MASK)
+		status = (midi_bytes[0] & MIDI.STATUS_MASK)
 		key = midi_bytes[1]
 		value = midi_bytes[2]
 		
-		# if CC => calculate relative_two_compliment value
-		if (status == CC_STATUS and value > 64):
-			value = value - 128
+		# execute callbacks that are registered for this event
+		callbacks = self.midi_callbacks.get(channel,{}).get(status,{}).get(key,[])
+		mode = MIDI.ABSOLUTE
+		if status == MIDI.CC_STATUS:
+			mode = self.suggest_map_mode(key)
 		
-		callbacks = self.midi_callbacks.get(status,{}).get(key,[])
 		for callback in callbacks:
-			callback(value)
+			callback(value, mode)
 
 
 	def suggest_input_port(self):
@@ -102,22 +119,17 @@ class SelectedTrackControl:
 	
 	
 	# internal method to register callbacks from different controls
-	def register_midi_callback(self, status, key, callback):
-		#log("register_midi_callback(%s, %s)" % (status, key))
-		if status in self.midi_callbacks:
-			if key in self.midi_callbacks[status]:
-				self.midi_callbacks[status][key].append(callback)
-			else:
-				self.midi_callbacks[status][key] = [callback, ]
-		else:
-			self.midi_callbacks[status] = {
-				key: [callback, ]
+	def register_midi_callback(self, callback, key, mode, status, channel):
+		if not channel in self.midi_callbacks:
+			self.midi_callbacks[channel] = {}
+		
+		if not status in self.midi_callbacks[channel]:
+			self.midi_callbacks[channel][status] = {
+				key: [callback,]
 			}
+		else:
+			if key in self.midi_callbacks[channel][status]:
+				self.midi_callbacks[channel][status][key].append(callback)
+			else:
+				self.midi_callbacks[channel][status][key] = [callback, ]
 	
-#	# helper-functions to register callbacks / UNUSED
-#	def register_midi_note(self, note, callback):
-#		self.register_midi_callback(NOTEON_STATUS, note, callback)
-#		
-#	def register_midi_cc(self, cc, callback):
-#		self.register_midi_callback(CC_STATUS, cc, callback)
-#
