@@ -29,13 +29,6 @@ class Control:
 				cur_mapping = (cur_mapping,)
 			
 			for m in cur_mapping:
-				# map optional 2nd callback if absolute values
-				# this improves performance as the mode of CCs is not requested each time values are received
-				if m.mode = ABSOLUTE and len(callback_items) > 2:
-					callback = callback_items[2]
-				else:
-					callback = callback_items[1]
-				
 				self.selected_track_controller.register_midi_callback(callback, m.key, m.mode, m.status, m.channel)
 				
 	
