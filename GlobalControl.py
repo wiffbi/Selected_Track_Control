@@ -63,7 +63,7 @@ class GlobalControl(Control):
 		self.song.loop = not self.song.loop
 		
 	def move_loop_by(self, value, mode):
-		self.song.loop_start = self.song.loop_start + MIDI.relative_to_signed_int[mode](value)
+		self.song.loop_start = self.song.loop_start + value
 		
 	def move_loop_left_bracket_by(self, value, mode):
 		d_value = MIDI.relative_to_signed_int[mode](value)
@@ -71,11 +71,11 @@ class GlobalControl(Control):
 		self.move_loop_right_bracket_by(-d_value)
 	
 	def move_loop_right_bracket_by(self, value, mode):
-		self.song.loop_length = self.song.loop_length + MIDI.relative_to_signed_int[mode](value)
+		self.song.loop_length = self.song.loop_length + value
 	
 	def set_tempo(self, value, mode):
 		if mode == MIDI.ABSOLUTE:
 			self.song.tempo = settings.tempo_min + value*self.tempo_step
 		else:
-			self.song.tempo = self.song.tempo + MIDI.relative_to_signed_int[mode](value)
+			self.song.tempo = self.song.tempo + value
 	

@@ -97,7 +97,9 @@ class SelectedTrackControl:
 		callbacks = self.midi_callbacks.get(channel,{}).get(status,{}).get(key,[])
 		mode = MIDI.ABSOLUTE
 		if status == MIDI.CC_STATUS:
+			# get mode and calculate signed int for MIDI value
 			mode = self.suggest_map_mode(key)
+			value = MIDI.relative_to_signed_int[mode](value)
 		
 		for callback in callbacks:
 			callback(value, mode)
