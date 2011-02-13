@@ -1,7 +1,7 @@
-from settings import DEBUG_MODE
+from settings import debug_mode
 
 def log(msg):
-	if not DEBUG_MODE:
+	if not debug_mode:
 		return
 	f = open(__file__.replace('.pyc', '.py').replace('Logging.py','SelectedTrackControl.log'), 'a')
 	f.write(msg+"\n")
