@@ -1,50 +1,45 @@
 #import Live
 
-from consts import *
+from MIDI import *
 import settings
 #from Logging import log
 
-class SessionControl:
+class SessionControl(Control):
 	__module__ = __name__
 	__doc__ = "Session parameters of SelectedTrackControl"
 	
 	def __init__(self, c_instance, selected_track_controller):
-		#log("SessionControl::__init__")
-		self.c_instance = c_instance
-		if c_instance:
-			self.song = c_instance.song()
+		super(c_instance, selected_track_controller)
 		
+		# each callback is (key, callback)
+		# key is a key in settings.midi_mapping
+		self.midi_callbacks = (
+			("play_selected_scene", self.fire_selected_scene),
+			("play_next_scene", self.fire_next_scene),
+			("play_prev_scene", self.fire_previous_scene),
+			
+			("first_scene", self.select_first_scene),
+			("last_scene", self.select_last_scene),
+			
+			("play_selected_clip", self.fire_selected_clip_slot),
+			("play_next_clip", self.fire_next_clip_slot),
+			("play_prev_clip", self.fire_previous_clip_slot),
+			("play_next_available_clip", self.fire_next_available_clip_slot),
+			("play_prev_available_clip", self.fire_previous_available_clip_slot),
+			
+			("stop_selected_track", self.stop_selected_track),
+			
+			("first_track", self.select_first_track),
+			("last_track", self.select_last_track),
+			
+			("scroll_scene", self.scroll_scenes_by),
+			("scroll_track", self.scroll_tracks_by)
+		)
 		
-		self.midi_callbacks = {
-			NOTEON_STATUS: (
-				(settings.NOTE_PLAY_SELECTED_SCENE, self.fire_selected_scene),
-				(settings.NOTE_PLAY_NEXT_SCENE, self.fire_next_scene),
-				(settings.NOTE_PLAY_PREV_SCENE, self.fire_previous_scene),
-				
-				(settings.NOTE_FIRST_SCENE, self.select_first_scene),
-				(settings.NOTE_LAST_SCENE, self.select_last_scene),
-				
-				(settings.NOTE_PLAY_SELECTED_CLIP, self.fire_selected_clip_slot),
-				(settings.NOTE_PLAY_NEXT_CLIP, self.fire_next_clip_slot),
-				(settings.NOTE_PLAY_PREV_CLIP, self.fire_previous_clip_slot),
-				(settings.NOTE_PLAY_NEXT_AVAILABLE_CLIP, self.fire_next_available_clip_slot),
-				(settings.NOTE_PLAY_PREV_AVAILABLE_CLIP, self.fire_previous_available_clip_slot),
-				
-				(settings.NOTE_FIRST_TRACK, self.select_first_track),
-				(settings.NOTE_LAST_TRACK, self.select_last_track)
-			),
-			CC_STATUS: (
-				(settings.CC_SCENE_SCROLL, self.scroll_scenes_by),
-				(settings.CC_TRACK_SCROLL, self.scroll_tracks_by)
-			)
-		}
-		
-		
-		# register callbacks on selected_track_controller
-		for status, callbacks in self.midi_callbacks.items():
-			for (key, callback) in callbacks:
-				selected_track_controller.register_midi_callback(status, key, callback)
-
+		# register midi_callbacks via parent
+		self.register_midi_callbacks()
+	
+	
 	def disconnect(self):
 		pass
 	
@@ -74,39 +69,47 @@ class SessionControl:
 	
 	
 	
-	def fire_selected_scene(self, velocity):
+	def fire_selected_scene(self, value, mode):
 		self.song.view.selected_scene.fire()
 	
-	def fire_next_scene(self, velocity):
+	def fire_next_scene(self, value, mode):
 		scene = self.get_scene_by_delta(self.song.view.selected_scene, 1)
 		scene.fire()
 		self.song.view.selected_scene = scene
 		
-	def fire_previous_scene(self, velocity):
+	def fire_previous_scene(self, value, mode):
 		scene = self.get_scene_by_delta(self.song.view.selected_scene, -1)
 		scene.fire()
 		self.song.view.selected_scene = scene
 	
 	
-	def scroll_scenes_by(self, d_value):
-		self.song.view.selected_scene = self.get_scene_by_delta(self.song.view.selected_scene, d_value)
-	def select_first_scene(self, velocity):
+	def scroll_scenes_by(self, value, mode):
+		if mode == MIDI.ABSOLUTE:
+			# note: absolute mode does not make any sense here!
+			pass
+		else:
+			self.song.view.selected_scene = self.get_scene_by_delta(self.song.view.selected_scene, value)
+	def select_first_scene(self, value, mode):
 		self.song.view.selected_scene = self.song.scenes[0]
-	def select_last_scene(self, velocity):
+	def select_last_scene(self, value, mode):
 		self.song.view.selected_scene = self.song.scenes[len(self.song.scenes)-1]
 	
 	
-	def scroll_tracks_by(self, d_value):
-		self.song.view.selected_track = self.get_track_by_delta(self.song.view.selected_track, d_value)
+	def scroll_tracks_by(self, value, mode):
+		if mode == MIDI.ABSOLUTE:
+			# note: absolute mode does not make any sense here!
+			pass
+		else:
+			self.song.view.selected_track = self.get_track_by_delta(self.song.view.selected_track, value)
 	
-	def select_first_track(self, velocity):
+	def select_first_track(self, value, mode):
 		tracks = self.song.tracks
 		if self.song.view.selected_track == self.song.master_track:
 			self.song.view.selected_track = tracks[len(tracks)-1]
 		else:
 			self.song.view.selected_track = tracks[0]
 	
-	def select_last_track(self, velocity):
+	def select_last_track(self, value, mode):
 		if self.song.view.selected_track == self.song.master_track:
 			return
 		
@@ -117,12 +120,17 @@ class SessionControl:
 		else:
 			self.song.view.selected_track = tracks[len(tracks)-1]
 	
+	def stop_selected_track(self, value, mode):
+		for clip_slot in self.song.view.selected_track.clip_slots:
+			if clip_slot.has_clip and clip_slot.clip.is_playing:
+				clip_slot.clip.stop()
+				break
 	
 	
 	
 	
 	
-	def fire_selected_clip_slot(self, velocity):
+	def fire_selected_clip_slot(self, value, mode):
 		self.song.view.highlighted_clip_slot.fire()
 	
 	
@@ -162,14 +170,14 @@ class SessionControl:
 		self.song.view.highlighted_clip_slot = clip_slot
 	
 	
-	def fire_next_clip_slot(self, velocity):
+	def fire_next_clip_slot(self, value, mode):
 		self.fire_clip_slot_by_delta(1, False)
 		
-	def fire_next_available_clip_slot(self, velocity):
+	def fire_next_available_clip_slot(self, value, mode):
 		self.fire_clip_slot_by_delta(1, True)
 	
-	def fire_previous_clip_slot(self, velocity):
+	def fire_previous_clip_slot(self, value, mode):
 		self.fire_clip_slot_by_delta(-1, False)
 		
-	def fire_previous_available_clip_slot(self, velocity):
+	def fire_previous_available_clip_slot(self, value, mode):
 		self.fire_clip_slot_by_delta(-1, True)
