@@ -2,6 +2,9 @@
 # for settings which MIDI-notes trigger what functionality see settings.py
 
 import Live
+#from Live import MidiMap
+#from Live.MidiMap import MapMode
+
 
 
 STATUS_MASK = 0xF0
@@ -23,12 +26,7 @@ RELATIVE_SIGNED_BIT2 = Live.MidiMap.MapMode.relative_signed_bit2 # 065 - 127 / 0
 RELATIVE_TWO_COMPLIMENT = Live.MidiMap.MapMode.relative_two_compliment # 001 - 064 / 127 - 65
 
 
-relative_to_signed_int = {
-	RELATIVE_BINARY_OFFSET: relativebinary_offset_to_signed_int,
-	RELATIVE_SIGNED_BIT: relative_signed_bit_to_signed_int
-	RELATIVE_SIGNED_BIT2: relative_signed_bit2_to_signed_int
-	RELATIVE_TWO_COMPLIMENT: relative_two_complement_to_signed_int
-}
+
 
 def relativebinary_offset_to_signed_int(value):
 	return value-64
@@ -46,6 +44,15 @@ def relative_two_complement_to_signed_int(value):
 	return value
 
 
+relative_to_signed_int = {
+	ABSOLUTE: lambda value: value,
+	RELATIVE_BINARY_OFFSET: relativebinary_offset_to_signed_int,
+	RELATIVE_SIGNED_BIT: relative_signed_bit_to_signed_int,
+	RELATIVE_SIGNED_BIT2: relative_signed_bit2_to_signed_int,
+	RELATIVE_TWO_COMPLIMENT: relative_two_complement_to_signed_int
+}
+
+
 
 class MIDICommand:
 	def __init__(self, key, mode = ABSOLUTE, status = NOTEON_STATUS, channel = 0):
@@ -55,7 +62,7 @@ class MIDICommand:
 		self.channel = channel
 class Note (MIDICommand):
 	def __init__(self, note, channel = 0):
-		super(note, ABSOLUTE, NOTEON_STATUS, channel)
+		MIDICommand.__init__(self, note, ABSOLUTE, NOTEON_STATUS, channel)
 class CC (MIDICommand):
 	def __init__(self, cc, mode = RELATIVE_TWO_COMPLIMENT, channel = 0):
-		super(cc, mode, CC_STATUS, channel)
+		MIDICommand.__init__(self, cc, mode, CC_STATUS, channel)

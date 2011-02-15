@@ -2,33 +2,35 @@ import MIDI
 import settings
 #from Logging import log
 
-import Control
+from Control import Control
 
 class GlobalControl(Control):
-	__module__ = __name__
+#	__module__ = __name__
 	__doc__ = "Global parameters of SelectedTrackControl"
 
 	def __init__(self, c_instance, selected_track_controller):
-		super(c_instance, selected_track_controller)
+		Control.__init__(self, c_instance, selected_track_controller)
 		
-		# each callback is (key, callback)
-		# key is a key in settings.midi_mapping
+		# each callback is (mapping, callback)
+		# mappings are taken from settings.midi_mapping
+		m = settings.midi_mapping
 		self.midi_callbacks = (
-			("overdub", self.toggle_overdub),
-			("disable_overdub", self.disable_overdub),
-			("record", self.toggle_record),
+			(m["overdub"], self.toggle_overdub),
+			(m["disable_overdub"], self.disable_overdub),
+			(m["record"], self.toggle_record),
 			
-			("punch_in", self.toggle_punchin),
-			("punch_out", self.toggle_punchout),
+			(m["punch_in"], self.toggle_punchin),
+			(m["punch_out"], self.toggle_punchout),
 			
-			("metronome", self.toggle_metronome),
-			("loop", self.toggle_loop),
+			(m["metronome"], self.toggle_metronome),
+			(m["loop"], self.toggle_loop),
 			
 			
-			("loop_move", self.move_loop_by),
-			("loop_lb_move", self.move_loop_left_bracket_by),
-			("loop_rb_move", self.move_loop_right_bracket_by),
-			("tempo", self.set_tempo)
+			(m["loop_move"], self.move_loop_by),
+			(m["loop_lb_move"], self.move_loop_left_bracket_by),
+			(m["loop_rb_move"], self.move_loop_right_bracket_by),
+			(m["tempo"], self.set_tempo),
+			(m["tap_tempo"], self.tap_tempo)
 		)
 		
 		# steps, when ABSOLUTE mode for tempo CC is used
@@ -79,3 +81,6 @@ class GlobalControl(Control):
 		else:
 			self.song.tempo = self.song.tempo + value
 	
+	def tap_tempo(self, value, mode):
+		if self.song.tap_tempo:
+			self.song.tap_tempo()

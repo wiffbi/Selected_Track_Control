@@ -1,39 +1,42 @@
-#import Live
-
-from MIDI import *
+import MIDI
 import settings
 #from Logging import log
 
+from Control import Control
+
 class SessionControl(Control):
-	__module__ = __name__
+#	__module__ = __name__
 	__doc__ = "Session parameters of SelectedTrackControl"
 	
 	def __init__(self, c_instance, selected_track_controller):
-		super(c_instance, selected_track_controller)
+		Control.__init__(self, c_instance, selected_track_controller)
 		
-		# each callback is (key, callback)
-		# key is a key in settings.midi_mapping
+		# each callback is (mapping, callback)
+		# mappings are taken from settings.midi_mapping
+		m = settings.midi_mapping
 		self.midi_callbacks = (
-			("play_selected_scene", self.fire_selected_scene),
-			("play_next_scene", self.fire_next_scene),
-			("play_prev_scene", self.fire_previous_scene),
+			(m["play_selected_scene"], self.fire_selected_scene),
+			(m["play_next_scene"], self.fire_next_scene),
+			(m["play_prev_scene"], self.fire_previous_scene),
 			
-			("first_scene", self.select_first_scene),
-			("last_scene", self.select_last_scene),
+			(m["first_scene"], self.select_first_scene),
+			(m["last_scene"], self.select_last_scene),
 			
-			("play_selected_clip", self.fire_selected_clip_slot),
-			("play_next_clip", self.fire_next_clip_slot),
-			("play_prev_clip", self.fire_previous_clip_slot),
-			("play_next_available_clip", self.fire_next_available_clip_slot),
-			("play_prev_available_clip", self.fire_previous_available_clip_slot),
+			(m["play_selected_clip"], self.fire_selected_clip_slot),
+			(m["play_next_clip"], self.fire_next_clip_slot),
+			(m["play_prev_clip"], self.fire_previous_clip_slot),
+			(m["play_next_available_clip"], self.fire_next_available_clip_slot),
+			(m["play_prev_available_clip"], self.fire_previous_available_clip_slot),
 			
-			("stop_selected_track", self.stop_selected_track),
+			(m["toggle_mute_selected_clip"], self.toggle_mute_selected_clip),
 			
-			("first_track", self.select_first_track),
-			("last_track", self.select_last_track),
+			(m["stop_selected_track"], self.stop_selected_track),
 			
-			("scroll_scene", self.scroll_scenes_by),
-			("scroll_track", self.scroll_tracks_by)
+			(m["first_track"], self.select_first_track),
+			(m["last_track"], self.select_last_track),
+			
+			(m["scroll_scene"], self.scroll_scenes_by),
+			(m["scroll_track"], self.scroll_tracks_by)
 		)
 		
 		# register midi_callbacks via parent
@@ -68,6 +71,11 @@ class SessionControl(Control):
 	
 	
 	
+	
+	def toggle_mute_selected_clip(self, value, mode):
+		clip_slot = self.song.view.highlighted_clip_slot
+		if clip_slot.has_clip():
+			clip_slot.clip.muted = not clip_slot.clip.muted
 	
 	def fire_selected_scene(self, value, mode):
 		self.song.view.selected_scene.fire()

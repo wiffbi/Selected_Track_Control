@@ -23,23 +23,23 @@ class SelectedTrackControl:
 		
 		# lookup object for fast lookup of cc to mode
 		self.midi_cc_to_mode = {}
-		list_type = type((1,2));
-		for v in settings.mapping.values():
-			if type(v) == list_type:
-				for command in v:
-					if isinstance(command, CC):
-						 self.midi_cc_to_mode[command.key] = command.mode
-			else:
-				if isinstance(v, CC):
-					self.midi_cc_to_mode[v.key] = v.mode
+		# parse midi_mapping recursive for MIDI.CC
+		self.mapping_parse_recursive(settings.midi_mapping.values())
 		
 		self.components = (
-			#SessionControl(c_instance, self),
-			#MixerControl(c_instance, self),
+			SessionControl(c_instance, self),
+			MixerControl(c_instance, self),
 			GlobalControl(c_instance, self),
 		)
 		
-
+	def mapping_parse_recursive(self, mapping):
+		tuple_type = type((1,2));
+		for command in mapping:
+			if type(command) == tuple_type:
+				self.mapping_parse_recursive(command)
+			elif isinstance(command, MIDI.CC):
+				#log("MIDI CC %d is %s" % (command.key, command.mode))
+				self.midi_cc_to_mode[command.key] = command.mode
 		
 	
 	def suggest_map_mode(self, cc_no):
@@ -87,11 +87,12 @@ class SelectedTrackControl:
 	
 	# called from Live when MIDI messages are received
 	def receive_midi(self, midi_bytes):
-		#log("receive_midi")
 		channel = (midi_bytes[0] & MIDI.CHAN_MASK)
 		status = (midi_bytes[0] & MIDI.STATUS_MASK)
 		key = midi_bytes[1]
 		value = midi_bytes[2]
+		
+		#log("receive_midi on channel %d, status %d, key %d, value %d" % (channel, status, key, value))
 		
 		# execute callbacks that are registered for this event
 		callbacks = self.midi_callbacks.get(channel,{}).get(status,{}).get(key,[])
