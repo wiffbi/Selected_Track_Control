@@ -107,7 +107,7 @@ midi_mapping = {
 	
 	
 	# global controls
-	"tempo": CC(86),
+	"tempo": (CC(86), CC(20, ABSOLUTE)),
 	"tap_tempo": Note(86), # attention: Live 8 only!
 	"tempo_increase": Note(87),
 	"tempo_decrease": Note(85),
