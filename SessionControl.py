@@ -11,6 +11,9 @@ class SessionControl(Control):
 	def __init__(self, c_instance, selected_track_controller):
 		Control.__init__(self, c_instance, selected_track_controller)
 		
+		
+		self.auto_arm = settings.auto_arm
+		
 		# each callback is (mapping, callback)
 		# mappings are taken from settings.midi_mapping
 		m = settings.midi_mapping
@@ -31,6 +34,7 @@ class SessionControl(Control):
 			(m["toggle_mute_selected_clip"], self.toggle_mute_selected_clip),
 			
 			(m["stop_selected_track"], self.stop_selected_track),
+			(m["toggle_auto_arm"], self.toggle_auto_arm),
 			
 			(m["first_track"], self.select_first_track),
 			(m["last_track"], self.select_last_track),
@@ -109,6 +113,28 @@ class SessionControl(Control):
 			pass
 		else:
 			self.song.view.selected_track = self.get_track_by_delta(self.song.view.selected_track, value)
+			if self.auto_arm:
+				track = self.song.view.selected_track
+				if track.can_be_armed:
+					track.arm = True
+				for t in self.song.tracks:
+					if not t == track and t.can_be_armed:
+						t.arm = False
+	
+	def toggle_auto_arm(self, value, mode):
+		self.auto_arm = not self.auto_arm
+		
+		track = self.song.view.selected_track
+		if track.can_be_armed:
+			track.arm = self.auto_arm
+		
+		if self.auto_arm:
+			for t in self.song.tracks:
+				if not t == track and t.can_be_armed:
+					t.arm = False
+	
+	
+	
 	
 	def select_first_track(self, value, mode):
 		tracks = self.song.tracks

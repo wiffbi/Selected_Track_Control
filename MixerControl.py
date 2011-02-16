@@ -11,12 +11,20 @@ class MixerControl(Control):
 	def __init__(self, c_instance, selected_track_controller):
 		Control.__init__(self, c_instance, selected_track_controller)
 		
+		
+		# arming on track-selection does not work from within the callback
+		# see SessionControl for at least auto-arm when using STC to select track
+		#self.auto_arm = settings.auto_arm
+		#self.song.view.add_selected_track_listener(lambda : self.on_track_selected())
+		
+		
 		# each callback is (mapping, callback)
 		# mappings are taken from settings.midi_mapping
 		m = settings.midi_mapping
 		self.midi_callbacks = (
 			(m["arm"], self.toggle_arm),
 			(m["arm_exclusive"], self.toggle_arm_exclusive),
+			(m["arm_kill"], self.arm_kill),
 			(m["solo"], self.toggle_solo),
 			(m["solo_exclusive"], self.toggle_solo_exclusive),
 			(m["solo_kill"], self.solo_kill),
@@ -85,15 +93,28 @@ class MixerControl(Control):
 		return self.song.tracks + self.song.return_tracks
 	
 	
-	
-	
+	# arming a track inside this callback does not work :(
+	#def on_track_selected(self):
+	#	#log("on track selected")
+	#	#midi_event_bytes = [144,0,127]
+	#	#self.selected_track_controller.receive_midi(midi_event_bytes)
+	#	#self.c_instance.send_midi(midi_event_bytes)
+	#	#log(str(midi_event_bytes))
+	#	
+	#	if self.auto_arm:
+	#		track = self.song.view.selected_track
+	#		if track.can_be_armed:
+	#			track.arm = True
+	#		for t in self.song.tracks:
+	#			if not t == track and t.can_be_armed:
+	#				t.arm = False
 	
 	
 	def toggle_arm_track(self, track, exclusive):
 		if track.can_be_armed:
 			track.arm = not track.arm
 		if exclusive: # arm exclusive
-			for t in self.get_tracks():
+			for t in self.song.tracks:
 				if not t == track and t.can_be_armed:
 					t.arm = False
 	def toggle_arm(self, value, mode):
@@ -102,6 +123,12 @@ class MixerControl(Control):
 	def toggle_arm_exclusive(self, value, mode):
 		# toggle exclusive depending on settings
 		self.toggle_arm_track(self.song.view.selected_track, (not self.song.exclusive_arm))
+	
+	def arm_kill(self, value, mode):
+		for t in self.song.tracks:
+			if t.can_be_armed:
+				t.arm = False
+	
 	
 	def toggle_solo_track(self, track, exclusive):
 		track.solo = not track.solo

@@ -31,11 +31,13 @@ tempo_max = 187
 
 volume_default = 0.55 # this value is -12db (trial-and-error to set as there is no mapping function available)
 
+auto_arm = False # default behaviour for auto-arming a track on selection, either False or True
 
 midi_mapping = {
 	# track controls
 	"arm": Note(0),
 	"arm_exclusive": Note(3),
+	"arm_kill": Note(10),
 	"solo": Note(1),
 	"solo_exclusive": Note(4),
 	"solo_kill": Note(7),
@@ -77,6 +79,8 @@ midi_mapping = {
 	# session controls
 	"scroll_scene": CC(84),
 	"scroll_track": CC(85),
+	
+	"toggle_auto_arm": Note(11),
 	
 	"prev_scene": Note(82),
 	"next_scene": Note(83),
