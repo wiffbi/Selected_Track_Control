@@ -172,7 +172,7 @@ class MixerControl(Control):
 	def set_volume(self, value, mode):
 		param = self.song.view.selected_track.mixer_device.volume
 		if mode == MIDI.ABSOLUTE:
-			param.value = value/127
+			param.value = value/127.0
 		else:
 			param.value = max(0.0, min(1.0, param.value + (value/200.0)))
 	
@@ -183,7 +183,8 @@ class MixerControl(Control):
 	def set_pan(self, value, mode):
 		param = self.song.view.selected_track.mixer_device.panning
 		if mode == MIDI.ABSOLUTE:
-			param.value = value-64/64
+			param.value = (value-64)/64.0
+			
 		else:
 			param.value = max(-1.0, min(1.0, param.value + (value/100.0)))
 	
@@ -195,7 +196,7 @@ class MixerControl(Control):
 		param = self.song.view.selected_track.mixer_device.sends[i]
 		if param:
 			if mode == MIDI.ABSOLUTE:
-				param.value = value/127
+				param.value = value/127.0
 			else:
 				param.value = max(0.0, min(1.0, param.value + (value/100.0)))
 	

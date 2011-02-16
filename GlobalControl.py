@@ -34,7 +34,7 @@ class GlobalControl(Control):
 		)
 		
 		# steps, when ABSOLUTE mode for tempo CC is used
-		self.tempo_step = (settings.tempo_max - settings.tempo_min)/127
+		self.tempo_step = (settings.tempo_max - settings.tempo_min)/127.0
 		
 		# register midi_callbacks via parent
 		self.register_midi_callbacks()
