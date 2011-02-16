@@ -1,7 +1,7 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.0.1 – released June 7, 2010.
+Current version is 1.1 – released Feb 16, 2011.
 
 
 Control the currently selected track via common MIDI messages
@@ -34,7 +34,7 @@ More information and the app itself can be found on the [project’s homepage.](
 
 System Requirements
 -------------------
-Ableton Live 7
+Ableton Live 7 (some features require 8)
 
 
 
@@ -77,7 +77,22 @@ You can change them there to match your needs, but be careful not to use the sam
 Changelog
 ---------
 
-### Version 1.0.1 (released June 7, 2010) - current version
+### Version 1.1 (released Feb 16, 2011) - current version
+
+Added several new features such as:
+
+*	**Auto-arm on selection** arms a track automatically when selected through STC
+*	**Solo kill** deactivates any active soloing on any track independent of the track your on
+*	**Mute flip** mutes active tracks and unmutes muted tracks
+*	**Tap Tempo** (Live 8 only) instantly mapped – no previous manual mapping required
+
+Made STC more versatile by supporting a wider range of MIDI commands (use it with your own MIDI controller!)
+
+*	**Support for absolute and relative MIDI CC values** (7-bit only) – no more rel2comp-bindings; feel free to use STC with your custom MIDI controller! Some default MIDI CC bindings already pre-defined – for more info see MIDI Implementation Chart
+*	**Unlimited sends** – control effect-level to as many sends as you need, you are only limited by your MIDI controller (using keyboard shortcuts only sends 1-4 are available)
+
+
+### Version 1.0.1 (released June 7, 2010)
 
 This is a maintenance release. The following items were fixed and/or added:
 
