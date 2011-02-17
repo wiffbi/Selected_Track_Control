@@ -39,8 +39,8 @@ class SessionControl(Control):
 			(m["first_track"], self.select_first_track),
 			(m["last_track"], self.select_last_track),
 			
-			(m["scroll_scene"], self.scroll_scenes_by),
-			(m["scroll_track"], self.scroll_tracks_by)
+			(m["scroll_scenes"], self.scroll_scenes),
+			(m["scroll_tracks"], self.scroll_tracks)
 		)
 		
 		# register midi_callbacks via parent
@@ -95,10 +95,12 @@ class SessionControl(Control):
 		self.song.view.selected_scene = scene
 	
 	
-	def scroll_scenes_by(self, value, mode):
+	def scroll_scenes(self, value, mode):
 		if mode == MIDI.ABSOLUTE:
-			# note: absolute mode does not make any sense here!
-			pass
+			# invert value (127-value), somehow feels more natural to turn left to go fully down and right to go up
+			# also when assigning this to a fader this is more natural as up is up and down is down
+			index = int((127-value)/(128.0/len(self.song.scenes)))
+			self.song.view.selected_scene = self.song.scenes[index]
 		else:
 			self.song.view.selected_scene = self.get_scene_by_delta(self.song.view.selected_scene, value)
 	def select_first_scene(self, value, mode):
@@ -107,10 +109,11 @@ class SessionControl(Control):
 		self.song.view.selected_scene = self.song.scenes[len(self.song.scenes)-1]
 	
 	
-	def scroll_tracks_by(self, value, mode):
+	def scroll_tracks(self, value, mode):
 		if mode == MIDI.ABSOLUTE:
-			# note: absolute mode does not make any sense here!
-			pass
+			tracks = self.get_all_tracks()
+			index = int(value/(128.0/len(tracks)))
+			self.song.view.selected_track = tracks[index]
 		else:
 			self.song.view.selected_track = self.get_track_by_delta(self.song.view.selected_track, value)
 			if self.auto_arm:

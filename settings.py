@@ -77,8 +77,8 @@ midi_mapping = {
 	
 	
 	# session controls
-	"scroll_scene": CC(84),
-	"scroll_track": CC(85),
+	"scroll_scenes": (CC(84), CC(9, ABSOLUTE)),
+	"scroll_tracks": (CC(85), CC(11, ABSOLUTE)),
 	
 	"toggle_auto_arm": Note(11),
 	
