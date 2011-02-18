@@ -40,7 +40,12 @@ class SessionControl(Control):
 			(m["last_track"], self.select_last_track),
 			
 			(m["scroll_scenes"], self.scroll_scenes),
-			(m["scroll_tracks"], self.scroll_tracks)
+			(m["scroll_tracks"], self.scroll_tracks),
+			
+			(m["prev_scene"], lambda value, mode: self.scroll_scenes(-1, MIDI.RELATIVE_TWO_COMPLIMENT)),
+			(m["next_scene"], lambda value, mode: self.scroll_scenes(1, MIDI.RELATIVE_TWO_COMPLIMENT)),
+			(m["prev_track"], lambda value, mode: self.scroll_tracks(-1, MIDI.RELATIVE_TWO_COMPLIMENT)),
+			(m["next_track"], lambda value, mode: self.scroll_tracks(1, MIDI.RELATIVE_TWO_COMPLIMENT))
 		)
 		
 		# register midi_callbacks via parent
