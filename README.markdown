@@ -77,7 +77,20 @@ You can change them there to match your needs, but be careful not to use the sam
 Changelog
 ---------
 
-### Version 1.1 (released Feb 16, 2011) - current version
+### Version 1.1.2 (released Feb 18, 2011) - current version
+
+Improved Session-Navigation:
+
+*	Walk through tracks/scenes via MIDI Note-events (Notes 82-85)
+*	Navigate tracks/scenes with absolut MIDI CC (tracks/scenes are distributed evenly across the whole range of 0-127)
+
+
+### Version 1.1.1 (released Feb 17, 2011)
+
+Small bugfix concerning absolute MIDI CC controlling volume, pan, etc.
+
+
+### Version 1.1 (released Feb 16, 2011)
 
 Added several new features such as:
 
