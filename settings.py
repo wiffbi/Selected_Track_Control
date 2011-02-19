@@ -104,7 +104,7 @@ midi_mapping = {
 	"stop_all_clips": Note(49),
 	"stop_selected_track": Note(48),
 	
-	"toggle_mute_selected_clip": Note(50),
+	#"toggle_mute_selected_clip": Note(50), # does not do anything
 	
 	
 	# global controls

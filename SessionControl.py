@@ -1,6 +1,6 @@
 import MIDI
 import settings
-#from Logging import log
+from Logging import log
 
 from Control import Control
 
@@ -31,7 +31,7 @@ class SessionControl(Control):
 			(m["play_next_available_clip"], self.fire_next_available_clip_slot),
 			(m["play_prev_available_clip"], self.fire_previous_available_clip_slot),
 			
-			(m["toggle_mute_selected_clip"], self.toggle_mute_selected_clip),
+			#(m["toggle_mute_selected_clip"], self.toggle_mute_selected_clip),
 			
 			(m["stop_all_clips"], self.stop_all_clips),
 			(m["stop_selected_track"], self.stop_selected_track),
@@ -86,10 +86,27 @@ class SessionControl(Control):
 	
 	
 	
-	def toggle_mute_selected_clip(self, value, mode):
-		clip_slot = self.song.view.highlighted_clip_slot
-		if clip_slot.has_clip():
-			clip_slot.clip.muted = not clip_slot.clip.muted
+#	def toggle_mute_selected_clip(self, value, mode):
+#		log("toggle_mute_selected_clip")
+#		clip_slot = self.song.view.highlighted_clip_slot
+#		clip = self.song.view.detail_clip
+#		#if clip_slot and clip_slot.has_clip():
+#		#	clip_slot.clip.muted = not clip_slot.clip.muted
+#		
+#		if clip:
+#			log("clip available")
+#			for slot in dir(clip):
+#				#try:
+#				#	attr = getattr(clip, slot)
+#				#except:
+#				#	attr = 'no_attr'
+#				#log(attr+", "+slot)
+#				log(slot)
+#			log(getattr(clip, '__doc__', None) or 'no documentation')
+#		else:
+#			log("no clip available")
+#		
+#		log("toggle_mute_selected_clip done")
 	
 	def fire_selected_scene(self, value, mode):
 		self.song.view.selected_scene.fire()
