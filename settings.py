@@ -101,6 +101,7 @@ midi_mapping = {
 	"play_prev_clip": Note(41),
 	"play_next_available_clip": Note(44),
 	"play_prev_available_clip": Note(42),
+	"stop_all_clips": Note(49),
 	"stop_selected_track": Note(48),
 	
 	"toggle_mute_selected_clip": Note(50),

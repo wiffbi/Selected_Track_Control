@@ -33,6 +33,7 @@ class SessionControl(Control):
 			
 			(m["toggle_mute_selected_clip"], self.toggle_mute_selected_clip),
 			
+			(m["stop_all_clips"], self.stop_all_clips),
 			(m["stop_selected_track"], self.stop_selected_track),
 			(m["toggle_auto_arm"], self.toggle_auto_arm),
 			
@@ -55,6 +56,10 @@ class SessionControl(Control):
 	def disconnect(self):
 		pass
 	
+	
+	
+	def stop_all_clips(self, value, mode):
+		self.song.stop_all_clips()
 	
 	
 	
