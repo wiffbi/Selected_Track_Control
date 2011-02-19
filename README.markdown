@@ -1,7 +1,7 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.1.2 – released Feb 18, 2011.
+Current version is 1.1.3 – released Feb 19, 2011.
 
 
 Control the currently selected track via common MIDI messages
@@ -77,7 +77,12 @@ You can change them there to match your needs, but be careful not to use the sam
 Changelog
 ---------
 
-### Version 1.1.2 (released Feb 18, 2011) - current version
+### Version 1.1.3 (released Feb 19, 2011)
+
+Fixed and added some global controls (play/pause/play selection as well as undo/redo), added stop-controls to selected and all tracks
+
+
+### Version 1.1.2 (released Feb 18, 2011)
 
 Improved Session-Navigation:
 
