@@ -113,6 +113,13 @@ midi_mapping = {
 	"tempo_increase": Note(87),
 	"tempo_decrease": Note(85),
 	
+	"play_stop": Note(20),
+	"play_pause": Note(21),
+	"play_selection": Note(24),
+	
+	"undo": Note(80),
+	"redo": Note(81),
+	
 	
 	"loop": Note(18),
 	"loop_move": CC(87),

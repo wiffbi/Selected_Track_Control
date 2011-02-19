@@ -30,7 +30,14 @@ class GlobalControl(Control):
 			(m["loop_lb_move"], self.move_loop_left_bracket_by),
 			(m["loop_rb_move"], self.move_loop_right_bracket_by),
 			(m["tempo"], self.set_tempo),
-			(m["tap_tempo"], self.tap_tempo)
+			(m["tap_tempo"], self.tap_tempo),
+			
+			(m["play_stop"], self.play_stop),
+			(m["play_pause"], self.play_pause),
+			(m["play_selection"], self.play_selection),
+			
+			(m["undo"], self.undo),
+			(m["redo"], self.redo),
 		)
 		
 		# steps, when ABSOLUTE mode for tempo CC is used
@@ -40,6 +47,30 @@ class GlobalControl(Control):
 		self.register_midi_callbacks()
 	
 	
+	
+	def play_stop(self, value, mode):
+		if self.song.is_playing:
+			self.song.stop_playing()
+		else:
+			self.song.start_playing()
+	
+	def play_pause(self, value, mode):
+		if self.song.is_playing:
+			self.song.stop_playing()
+		else:
+			self.song.continue_playing()
+	
+	def play_selection(self, value, mode):
+		if self.song.is_playing:
+			self.song.stop_playing()
+		else:
+			self.song.play_selection()
+	
+	def undo(self, value, mode):
+		self.song.undo()
+	
+	def redo(self, value, mode):
+		self.song.redo()
 	
 	
 	
