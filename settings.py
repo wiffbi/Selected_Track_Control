@@ -4,7 +4,7 @@ from MIDI import * # import MIDI status codes
 
 
 # debug_mode: whether the log-function should output to logfile
-debug_mode = True
+debug_mode = False
 
 """
 	<key>: (<MIDI note/CC number> [, <mapping mode> [, <status type> [, <MIDI channel>]]])
@@ -38,7 +38,7 @@ midi_mapping = {
 	"arm": Note(0),
 	"arm_exclusive": Note(3),
 	"arm_kill": Note(10),
-	"solo": Note(1),
+	#"solo": Note(1),
 	"solo_exclusive": Note(4),
 	"solo_kill": Note(7),
 	"mute": Note(2),
