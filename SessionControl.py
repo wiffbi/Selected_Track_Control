@@ -13,48 +13,40 @@ class SessionControl(Control):
 		
 		
 		self.auto_arm = settings.auto_arm
-		
-		# each callback is (mapping, callback)
-		# mappings are taken from settings.midi_mapping
-		m = settings.midi_mapping
-		self.midi_callbacks = (
-			(m["play_selected_scene"], self.fire_selected_scene),
-			(m["play_next_scene"], self.fire_next_scene),
-			(m["play_prev_scene"], self.fire_previous_scene),
+	
+	
+	def get_midi_bindings(self):
+		return (
+			("play_selected_scene", self.fire_selected_scene),
+			("play_next_scene", self.fire_next_scene),
+			("play_prev_scene", self.fire_previous_scene),
 			
-			(m["first_scene"], self.select_first_scene),
-			(m["last_scene"], self.select_last_scene),
+			("first_scene", self.select_first_scene),
+			("last_scene", self.select_last_scene),
 			
-			(m["play_selected_clip"], self.fire_selected_clip_slot),
-			(m["play_next_clip"], self.fire_next_clip_slot),
-			(m["play_prev_clip"], self.fire_previous_clip_slot),
-			(m["play_next_available_clip"], self.fire_next_available_clip_slot),
-			(m["play_prev_available_clip"], self.fire_previous_available_clip_slot),
+			("play_selected_clip", self.fire_selected_clip_slot),
+			("play_next_clip", self.fire_next_clip_slot),
+			("play_prev_clip", self.fire_previous_clip_slot),
+			("play_next_available_clip", self.fire_next_available_clip_slot),
+			("play_prev_available_clip", self.fire_previous_available_clip_slot),
 			
-			#(m["toggle_mute_selected_clip"], self.toggle_mute_selected_clip),
+			#("toggle_mute_selected_clip", self.toggle_mute_selected_clip),
 			
-			(m["stop_all_clips"], self.stop_all_clips),
-			(m["stop_selected_track"], self.stop_selected_track),
-			(m["toggle_auto_arm"], self.toggle_auto_arm),
+			("stop_all_clips", self.stop_all_clips),
+			("stop_selected_track", self.stop_selected_track),
+			("toggle_auto_arm", self.toggle_auto_arm),
 			
-			(m["first_track"], self.select_first_track),
-			(m["last_track"], self.select_last_track),
+			("first_track", self.select_first_track),
+			("last_track", self.select_last_track),
 			
-			(m["scroll_scenes"], self.scroll_scenes),
-			(m["scroll_tracks"], self.scroll_tracks),
+			("scroll_scenes", self.scroll_scenes),
+			("scroll_tracks", self.scroll_tracks),
 			
-			(m["prev_scene"], lambda value, mode: self.scroll_scenes(-1, MIDI.RELATIVE_TWO_COMPLIMENT)),
-			(m["next_scene"], lambda value, mode: self.scroll_scenes(1, MIDI.RELATIVE_TWO_COMPLIMENT)),
-			(m["prev_track"], lambda value, mode: self.scroll_tracks(-1, MIDI.RELATIVE_TWO_COMPLIMENT)),
-			(m["next_track"], lambda value, mode: self.scroll_tracks(1, MIDI.RELATIVE_TWO_COMPLIMENT))
+			("prev_scene", lambda value, mode: self.scroll_scenes(-1, MIDI.RELATIVE_TWO_COMPLIMENT)),
+			("next_scene", lambda value, mode: self.scroll_scenes(1, MIDI.RELATIVE_TWO_COMPLIMENT)),
+			("prev_track", lambda value, mode: self.scroll_tracks(-1, MIDI.RELATIVE_TWO_COMPLIMENT)),
+			("next_track", lambda value, mode: self.scroll_tracks(1, MIDI.RELATIVE_TWO_COMPLIMENT))
 		)
-		
-		# register midi_callbacks via parent
-		self.register_midi_callbacks()
-	
-	
-	def disconnect(self):
-		pass
 	
 	
 	

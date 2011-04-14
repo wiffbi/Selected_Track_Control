@@ -11,40 +11,36 @@ class GlobalControl(Control):
 	def __init__(self, c_instance, selected_track_controller):
 		Control.__init__(self, c_instance, selected_track_controller)
 		
-		# each callback is (mapping, callback)
-		# mappings are taken from settings.midi_mapping
-		m = settings.midi_mapping
-		self.midi_callbacks = (
-			(m["overdub"], self.toggle_overdub),
-			(m["disable_overdub"], self.disable_overdub),
-			(m["record"], self.toggle_record),
-			
-			(m["punch_in"], self.toggle_punchin),
-			(m["punch_out"], self.toggle_punchout),
-			
-			(m["metronome"], self.toggle_metronome),
-			(m["loop"], self.toggle_loop),
-			
-			
-			(m["loop_move"], self.move_loop_by),
-			(m["loop_lb_move"], self.move_loop_left_bracket_by),
-			(m["loop_rb_move"], self.move_loop_right_bracket_by),
-			(m["tempo"], self.set_tempo),
-			(m["tap_tempo"], self.tap_tempo),
-			
-			(m["play_stop"], self.play_stop),
-			(m["play_pause"], self.play_pause),
-			(m["play_selection"], self.play_selection),
-			
-			(m["undo"], self.undo),
-			(m["redo"], self.redo),
-		)
-		
 		# steps, when ABSOLUTE mode for tempo CC is used
 		self.tempo_step = (settings.tempo_max - settings.tempo_min)/127.0
 		
-		# register midi_callbacks via parent
-		self.register_midi_callbacks()
+	
+	def get_midi_bindings(self):
+		return (
+			("overdub", self.toggle_overdub),
+			("disable_overdub", self.disable_overdub),
+			("record", self.toggle_record),
+			
+			("punch_in", self.toggle_punchin),
+			("punch_out", self.toggle_punchout),
+			
+			("metronome", self.toggle_metronome),
+			("loop", self.toggle_loop),
+			
+			
+			("loop_move", self.move_loop_by),
+			("loop_lb_move", self.move_loop_left_bracket_by),
+			("loop_rb_move", self.move_loop_right_bracket_by),
+			("tempo", self.set_tempo),
+			("tap_tempo", self.tap_tempo),
+			
+			("play_stop", self.play_stop),
+			("play_pause", self.play_pause),
+			("play_selection", self.play_selection),
+			
+			("undo", self.undo),
+			("redo", self.redo),
+		)
 	
 	
 	

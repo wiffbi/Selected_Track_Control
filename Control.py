@@ -1,5 +1,6 @@
 import MIDI
-#import settings
+#import inspect
+import settings
 #from Logging import log
 
 class Control:
@@ -12,9 +13,14 @@ class Control:
 			self.song = c_instance.song()
 		self.selected_track_controller = selected_track_controller
 		#self.midi_callbacks = (,)
-	
-	def register_midi_callbacks(self):
-		for mapping, callback in self.midi_callbacks:
+		
+		
+		for key, callback in self.get_midi_bindings():
+			if not key in settings.midi_mapping:
+				
+				continue
+			
+			mapping = settings.midi_mapping[key]
 			# always make sure mapping is a tuple
 			if isinstance(mapping, MIDI.MIDICommand):
 				mapping = (mapping,)
@@ -26,3 +32,5 @@ class Control:
 	def disconnect(self):
 		pass
 	
+	def get_midi_bindings(self):
+		return set()

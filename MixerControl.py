@@ -18,29 +18,6 @@ class MixerControl(Control):
 		#self.song.view.add_selected_track_listener(lambda : self.on_track_selected())
 		
 		
-		# each callback is (mapping, callback)
-		# mappings are taken from settings.midi_mapping
-		m = settings.midi_mapping
-		self.midi_callbacks = (
-			(m["arm"], self.toggle_arm),
-			(m["arm_exclusive"], self.toggle_arm_exclusive),
-			(m["arm_kill"], self.arm_kill),
-			(m["solo"], self.toggle_solo),
-			(m["solo_exclusive"], self.toggle_solo_exclusive),
-			(m["solo_kill"], self.solo_kill),
-			(m["mute"], self.toggle_mute),
-			(m["mute_exclusive"], self.toggle_mute_exclusive),
-			(m["mute_kill"], self.mute_kill),
-			(m["mute_flip"], self.mute_flip),
-			(m["reset_pan"], self.reset_pan),
-			(m["reset_volume"], self.reset_volume),
-			(m["switch_monitoring"], self.switch_monitoring),
-			
-			(m["volume"], self.set_volume),
-			(m["pan"], self.set_pan)
-		)
-		
-		
 		# use helper-functions to set up callback via lambda-functions
 		# a closure inside the lambda-functions is needed, so i is always the current i
 		
@@ -52,12 +29,31 @@ class MixerControl(Control):
 			for i in range(len(settings.midi_mapping["sends"])):
 				self.setup_send_set(i, settings.midi_mapping["sends"][i])
 		
-		
-		# register midi_callbacks via parent
-		self.register_midi_callbacks()
-		
+	
 	def disconnect(self):
 		pass
+	
+	
+	def get_midi_bindings(self):
+		return (
+			("arm", self.toggle_arm),
+			("arm_exclusive", self.toggle_arm_exclusive),
+			("arm_kill", self.arm_kill),
+			("solo", self.toggle_solo),
+			("solo_exclusive", self.toggle_solo_exclusive),
+			("solo_kill", self.solo_kill),
+			("mute", self.toggle_mute),
+			("mute_exclusive", self.toggle_mute_exclusive),
+			("mute_kill", self.mute_kill),
+			("mute_flip", self.mute_flip),
+			("reset_pan", self.reset_pan),
+			("reset_volume", self.reset_volume),
+			("switch_monitoring", self.switch_monitoring),
+			
+			("volume", self.set_volume),
+			("pan", self.set_pan)
+		)
+	
 	
 	
 	def setup_send_reset(self, i, mappings):
