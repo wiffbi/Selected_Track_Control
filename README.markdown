@@ -77,6 +77,16 @@ You can change them there to match your needs, but be careful not to use the sam
 Changelog
 ---------
 
+### Version 1.1.5 (released Apr 14, 2011)
+
+made settings optional (so you don’t have to define all controls for Live – useful if you use STC for your own MIDI controller)
+
+
+### Version 1.1.4 (released Mar, 2011)
+
+no changes, just matching release number for Selected Track Control.app (which added support for only being active when Live is front-most app)
+
+
 ### Version 1.1.3 (released Feb 19, 2011)
 
 Fixed and added some global controls (play/pause/play selection as well as undo/redo), added stop-controls to selected and all tracks
