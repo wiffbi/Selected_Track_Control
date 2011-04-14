@@ -1,7 +1,7 @@
 import MIDI
 #import inspect
 import settings
-#from Logging import log
+from Logging import log
 
 class Control:
 #	__module__ = __name__
@@ -17,7 +17,7 @@ class Control:
 		
 		for key, callback in self.get_midi_bindings():
 			if not key in settings.midi_mapping:
-				
+				log("no mapping for control '%s' - see settings.py" % key)
 				continue
 			
 			mapping = settings.midi_mapping[key]
