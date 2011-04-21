@@ -1,7 +1,7 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.1.5 – released Apr 14, 2011.
+Current version is 1.1.6 – released Apr 21, 2011.
 
 
 Control the currently selected track via common MIDI messages
@@ -76,6 +76,11 @@ You can change them there to match your needs, but be careful not to use the sam
 
 Changelog
 ---------
+
+### Version 1.1.6 (released Apr 21, 2011)
+
+added global DEFAULT_CHANNEL to easily make STC listen on another MIDI channel
+
 
 ### Version 1.1.5 (released Apr 14, 2011)
 
