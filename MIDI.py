@@ -5,7 +5,7 @@ import Live
 #from Live import MidiMap
 #from Live.MidiMap import MapMode
 
-
+DEFAULT_CHANNEL = 0
 
 STATUS_MASK = 0xF0
 CHAN_MASK =  0x0F
@@ -55,14 +55,14 @@ relative_to_signed_int = {
 
 
 class MIDICommand:
-	def __init__(self, key, mode = ABSOLUTE, status = NOTEON_STATUS, channel = 0):
+	def __init__(self, key, mode = ABSOLUTE, status = NOTEON_STATUS, channel = DEFAULT_CHANNEL):
 		self.key = key
 		self.mode = mode
 		self.status = status
 		self.channel = channel
 class Note (MIDICommand):
-	def __init__(self, note, channel = 0):
+	def __init__(self, note, channel = DEFAULT_CHANNEL):
 		MIDICommand.__init__(self, note, ABSOLUTE, NOTEON_STATUS, channel)
 class CC (MIDICommand):
-	def __init__(self, cc, mode = RELATIVE_TWO_COMPLIMENT, channel = 0):
+	def __init__(self, cc, mode = RELATIVE_TWO_COMPLIMENT, channel = DEFAULT_CHANNEL):
 		MIDICommand.__init__(self, cc, mode, CC_STATUS, channel)
