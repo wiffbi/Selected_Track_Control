@@ -7,21 +7,11 @@ from MIDI import * # import MIDI status codes
 debug_mode = False
 
 """
-	<key>: (<MIDI note/CC number> [, <mapping mode> [, <status type> [, <MIDI channel>]]])
+	<setting>: Note (<MIDI note#> [, <MIDI channel>])
+	<setting>: CC (<MIDI CC#> [, <mapping mode> [, <MIDI channel>]])
 	
-	if <mapping mode> is ommitted, <status type> is assumed NOTEON_STATUS
-	if <mapping mode> is given, but <status type> is ommitted, <status type> is assumed CC_STATUS
-	
-	this allows for fast common configuration but also enables interesting mappings such as mapping volume absolute to a note events velocity:
-	
-	"volume": (
-		22, # MIDI note
-		ABSOLUTE, # mapping mode of value
-		NOTEON_STATUS, # status type
-		MIDI_CHANNEL
-	)
-	
-	Note: if you want to use a different MIDI channel than the default one, then you have to fully qualify all parameters
+	if <mapping mode> is ommitted, it is assumed MIDI.RELATIVE_TWO_COMPLIMENT (see MIDI.py for other modes)
+	if <MIDI channel> is ommitted, it is assumed MIDI.DEFAULT_CHANNEL (see MIDI.py)
 	
 """
 
