@@ -32,6 +32,8 @@ class GlobalControl(Control):
 			("loop_lb_move", self.move_loop_left_bracket_by),
 			("loop_rb_move", self.move_loop_right_bracket_by),
 			("tempo", self.set_tempo),
+			("tempo_increase", lambda value, mode : self.set_tempo(1, MIDI.RELATIVE_TWO_COMPLIMENT)),
+			("tempo_decrease", lambda value, mode : self.set_tempo(-1, MIDI.RELATIVE_TWO_COMPLIMENT)),
 			("tap_tempo", self.tap_tempo),
 			
 			("play_stop", self.play_stop),
