@@ -14,8 +14,9 @@ class MixerControl(Control):
 		
 		# arming on track-selection does not work from within the callback
 		# see SessionControl for at least auto-arm when using STC to select track
-		#self.auto_arm = settings.auto_arm
-		#self.song.view.add_selected_track_listener(lambda : self.on_track_selected())
+		self.auto_arm = settings.auto_arm
+		if self.auto_arm:
+			self.song.view.add_selected_track_listener(self.on_track_selected)
 		
 		
 		# use helper-functions to set up callback via lambda-functions
@@ -39,6 +40,9 @@ class MixerControl(Control):
 			("arm", self.toggle_arm),
 			("arm_exclusive", self.toggle_arm_exclusive),
 			("arm_kill", self.arm_kill),
+			
+			("toggle_auto_arm", self.toggle_auto_arm),
+			
 			("solo", self.toggle_solo),
 			("solo_exclusive", self.toggle_solo_exclusive),
 			("solo_kill", self.solo_kill),
@@ -90,20 +94,42 @@ class MixerControl(Control):
 	
 	
 	# arming a track inside this callback does not work :(
-	#def on_track_selected(self):
-	#	#log("on track selected")
-	#	#midi_event_bytes = [144,0,127]
-	#	#self.selected_track_controller.receive_midi(midi_event_bytes)
-	#	#self.c_instance.send_midi(midi_event_bytes)
-	#	#log(str(midi_event_bytes))
-	#	
-	#	if self.auto_arm:
-	#		track = self.song.view.selected_track
-	#		if track.can_be_armed:
-	#			track.arm = True
-	#		for t in self.song.tracks:
-	#			if not t == track and t.can_be_armed:
-	#				t.arm = False
+	def on_track_selected(self):
+		if self.auto_arm:
+			# send MIDI through loopback for auto-arm
+			mapping = settings.midi_mapping["arm"]
+			if not isinstance(mapping, MIDI.MIDICommand):
+				mapping = mapping[0]
+			
+			midi_bytes = (mapping.status, mapping.channel, 1)
+			self.c_instance.send_midi(midi_bytes)
+			
+			# the following does not work :(, therefore this MIDI loopback
+			#track = self.song.view.selected_track
+			#if track.can_be_armed:
+			#	track.arm = True
+			#for t in self.song.tracks:
+			#	if not t == track and t.can_be_armed:
+			#		t.arm = False
+	
+	
+	def toggle_auto_arm(self, value, mode):
+		if not value:
+			return
+		self.auto_arm = not self.auto_arm
+		
+		track = self.song.view.selected_track
+		if track.can_be_armed:
+			track.arm = self.auto_arm
+		
+		if self.auto_arm:
+			self.song.view.add_selected_track_listener(self.on_track_selected)
+			
+			for t in self.song.tracks:
+				if not t == track and t.can_be_armed:
+					t.arm = False
+		else:
+			self.song.view.remove_selected_track_listener(self.on_track_selected)
 	
 	
 	def toggle_arm_track(self, track, exclusive):

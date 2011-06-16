@@ -10,9 +10,6 @@ class SessionControl(Control):
 	
 	def __init__(self, c_instance, selected_track_controller):
 		Control.__init__(self, c_instance, selected_track_controller)
-		
-		
-		self.auto_arm = settings.auto_arm
 	
 	
 	def get_midi_bindings(self):
@@ -34,7 +31,6 @@ class SessionControl(Control):
 			
 			("stop_all_clips", self.stop_all_clips),
 			("stop_selected_track", self.stop_selected_track),
-			("toggle_auto_arm", self.toggle_auto_arm),
 			
 			("first_track", self.select_first_track),
 			("last_track", self.select_last_track),
@@ -143,25 +139,6 @@ class SessionControl(Control):
 			self.song.view.selected_track = tracks[index]
 		else:
 			self.song.view.selected_track = self.get_track_by_delta(self.song.view.selected_track, value)
-			if self.auto_arm:
-				track = self.song.view.selected_track
-				if track.can_be_armed:
-					track.arm = True
-				for t in self.song.tracks:
-					if not t == track and t.can_be_armed:
-						t.arm = False
-	
-	def toggle_auto_arm(self, value, mode):
-		self.auto_arm = not self.auto_arm
-		
-		track = self.song.view.selected_track
-		if track.can_be_armed:
-			track.arm = self.auto_arm
-		
-		if self.auto_arm:
-			for t in self.song.tracks:
-				if not t == track and t.can_be_armed:
-					t.arm = False
 	
 	
 	
