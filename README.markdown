@@ -1,7 +1,7 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.1.6 – released Apr 21, 2011.
+Current version is 1.1.7 – released Jun 16, 2011.
 
 
 Control the currently selected track via common MIDI messages
@@ -76,6 +76,12 @@ You can change them there to match your needs, but be careful not to use the sam
 
 Changelog
 ---------
+
+### Version 1.1.7 (released Jun 16, 2011)
+
+made CCs for toggled elements behave like Note (so ignore zero-values) – this is useful for pad-controllers, that also send CCs like the LPD8.
+improved auto-arm on selection if STC.app is used – thanks to new MIDI-loopback functionality in STC.app, auto-arm now works when selecting the track via mouse too! As a default has\_midi\_loopback is deactivated.
+
 
 ### Version 1.1.6 (released Apr 21, 2011)
 
