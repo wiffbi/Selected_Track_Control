@@ -22,6 +22,7 @@ tempo_max = 187
 volume_default = 0.55 # this value is -12db (trial-and-error to set as there is no mapping function available)
 
 auto_arm = False # default behaviour for auto-arming a track on selection, either False or True
+has_midi_loopback = False # auto-arm on selection (including when selecting via mouse) usually only works with the STC.app on Mac, which provides MIDI-loopback-functionality. If you set has_midi_loopback = False then auto-arm on selection works even without STC.app, but only if you use STC-MIDI Remote Script and MIDI to select a track (so if you select a track via mouse, it then will not be automatically armed)
 
 midi_mapping = {
 	# track controls

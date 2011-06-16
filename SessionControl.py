@@ -45,6 +45,14 @@ class SessionControl(Control):
 		)
 	
 	
+	def auto_arm_track(self, track):
+		# fallback to auto-arm if no midi loopback is available
+		if settings.auto_arm and not settings.has_midi_loopback:
+			if track.can_be_armed:
+				track.arm = True
+			for t in self.song.tracks:
+				if not t == track and t.can_be_armed:
+					t.arm = False
 	
 	def stop_all_clips(self, value, mode):
 		self.song.stop_all_clips()
@@ -139,7 +147,8 @@ class SessionControl(Control):
 			self.song.view.selected_track = tracks[index]
 		else:
 			self.song.view.selected_track = self.get_track_by_delta(self.song.view.selected_track, value)
-	
+		
+		self.auto_arm_track(self.song.view.selected_track)
 	
 	
 	
@@ -151,6 +160,8 @@ class SessionControl(Control):
 			self.song.view.selected_track = tracks[len(tracks)-1]
 		else:
 			self.song.view.selected_track = tracks[0]
+		
+		self.auto_arm_track(self.song.view.selected_track)
 	
 	def select_last_track(self, value, mode):
 		if not value:
@@ -164,6 +175,8 @@ class SessionControl(Control):
 			self.song.view.selected_track = self.song.master_track
 		else:
 			self.song.view.selected_track = tracks[len(tracks)-1]
+		
+		self.auto_arm_track(self.song.view.selected_track)
 	
 	def stop_selected_track(self, value, mode):
 		if not value:
