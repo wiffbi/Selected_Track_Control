@@ -108,6 +108,9 @@ midi_mapping = {
 	"play_pause": Note(21),
 	"play_selection": Note(24),
 	
+	"jump_by": CC(91),
+	"scrub_by": CC(90),
+	
 	"undo": Note(80),
 	"redo": Note(81),
 	

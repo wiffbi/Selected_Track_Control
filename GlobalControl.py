@@ -40,11 +40,21 @@ class GlobalControl(Control):
 			("play_pause", self.play_pause),
 			("play_selection", self.play_selection),
 			
+			("jump_by", self.jump_by),
+			("scrub_by", self.scrub_by),
+			
 			("undo", self.undo),
 			("redo", self.redo),
 		)
 	
+	def jump_by(self, value, mode):
+		d_value = MIDI.relative_to_signed_int[mode](value)
+		self.song.jump_by(d_value)
 	
+	def scrub_by(self, value, mode):
+		d_value = MIDI.relative_to_signed_int[mode](value)
+		self.song.scrub_by(d_value)
+
 	
 	def play_stop(self, value, mode):
 		if not value: # ignore 0 values from CC-pads
