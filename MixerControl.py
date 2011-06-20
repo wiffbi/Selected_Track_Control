@@ -14,8 +14,7 @@ class MixerControl(Control):
 		
 		# arming on track-selection does not work from within the callback
 		# see SessionControl for at least auto-arm when using STC to select track
-		self.auto_arm = settings.auto_arm
-		if self.auto_arm:
+		if settings.auto_arm:
 			self.song.view.add_selected_track_listener(self.on_track_selected)
 		
 		
@@ -116,13 +115,13 @@ class MixerControl(Control):
 	def toggle_auto_arm(self, value, mode):
 		if not value:
 			return
-		self.auto_arm = not self.auto_arm
+		settings.auto_arm = not settings.auto_arm
 		
 		track = self.song.view.selected_track
 		if track.can_be_armed:
 			track.arm = self.auto_arm
 		
-		if self.auto_arm:
+		if settings.auto_arm:
 			self.song.view.add_selected_track_listener(self.on_track_selected)
 			
 			for t in self.song.tracks:
