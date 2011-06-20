@@ -1,6 +1,6 @@
 import MIDI
 import settings
-#from Logging import log
+from Logging import log
 
 from Control import Control
 
@@ -40,16 +40,13 @@ class GlobalControl(Control):
 			("play_pause", self.play_pause),
 			("play_selection", self.play_selection),
 			
-			("jump_by", self.jump_by),
 			("scrub_by", self.scrub_by),
+			("scrub_forward", lambda value, mode : self.scrub_by(settings.scrub_increment, MIDI.RELATIVE_TWO_COMPLIMENT)),
+			("scrub_rewind", lambda value, mode : self.scrub_by(128-settings.scrub_increment, MIDI.RELATIVE_TWO_COMPLIMENT)),
 			
 			("undo", self.undo),
 			("redo", self.redo),
 		)
-	
-	def jump_by(self, value, mode):
-		d_value = MIDI.relative_to_signed_int[mode](value)
-		self.song.jump_by(d_value)
 	
 	def scrub_by(self, value, mode):
 		d_value = MIDI.relative_to_signed_int[mode](value)
@@ -132,7 +129,8 @@ class GlobalControl(Control):
 		if mode == MIDI.ABSOLUTE:
 			self.song.tempo = settings.tempo_min + value*self.tempo_step
 		else:
-			self.song.tempo = self.song.tempo + value
+			d_value = MIDI.relative_to_signed_int[mode](value)
+			self.song.tempo = self.song.tempo + d_value
 	
 	def tap_tempo(self, value, mode):
 		if value and self.song.tap_tempo:

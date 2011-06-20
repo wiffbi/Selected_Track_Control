@@ -21,6 +21,8 @@ tempo_max = 187
 
 volume_default = 0.55 # this value is -12db (trial-and-error to set as there is no mapping function available)
 
+scrub_increment = 4 # scrubs by ticks
+
 auto_select_playing_clip = False
 
 auto_arm = False # default behaviour for auto-arming a track on selection, either False or True
@@ -113,8 +115,10 @@ midi_mapping = {
 	"play_pause": Note(21),
 	"play_selection": Note(24),
 	
-	"jump_by": CC(91),
+	# global arrangement scrubbing
 	"scrub_by": CC(90),
+	"scrub_forward": Note(90),
+	"scrub_rewind": Note(89),
 	
 	"undo": Note(80),
 	"redo": Note(81),
