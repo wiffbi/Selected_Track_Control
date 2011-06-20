@@ -10,7 +10,9 @@ class SessionControl(Control):
 	
 	def __init__(self, c_instance, selected_track_controller):
 		Control.__init__(self, c_instance, selected_track_controller)
-	
+		
+		if settings.auto_select_playing_clip:
+			self.song.view.add_selected_track_listener(self.on_track_selected)
 	
 	def get_midi_bindings(self):
 		return (
@@ -26,6 +28,9 @@ class SessionControl(Control):
 			("play_prev_clip", self.fire_previous_clip_slot),
 			("play_next_available_clip", self.fire_next_available_clip_slot),
 			("play_prev_available_clip", self.fire_previous_available_clip_slot),
+			
+			("select_playing_clip", self.select_playing_clip),
+			("toggle_auto_select_playing_clip", self.toggle_auto_select_playing_clip),
 			
 			#("toggle_mute_selected_clip", self.toggle_mute_selected_clip),
 			
@@ -53,6 +58,35 @@ class SessionControl(Control):
 			for t in self.song.tracks:
 				if not t == track and t.can_be_armed:
 					t.arm = False
+	
+	
+	
+	
+	
+	def on_track_selected(self):
+		self.select_playing_clip(127, None)
+	
+	
+	def select_playing_clip(self, value, mode):
+		if not value:
+			return
+		
+		for clip_slot in self.song.view.selected_track.clip_slots:
+			if clip_slot.has_clip and clip_slot.clip.is_playing:
+				self.song.view.highlighted_clip_slot = clip_slot
+	
+	
+	def toggle_auto_select_playing_clip(self, value, mode):
+		if value:
+			settings.auto_select_playing_clip = not settings.auto_select_playing_clip
+			
+			if settings.auto_select_playing_clip:
+				self.on_track_selected()
+				self.song.view.add_selected_track_listener(self.on_track_selected)
+			else:
+				self.song.view.remove_selected_track_listener(self.on_track_selected)
+	
+	
 	
 	def stop_all_clips(self, value, mode):
 		self.song.stop_all_clips()
