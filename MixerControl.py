@@ -94,7 +94,7 @@ class MixerControl(Control):
 	
 	# arming a track inside this callback does not work :(
 	def on_track_selected(self):
-		if self.auto_arm:
+		if settings.auto_arm:
 			# send MIDI through loopback for auto-arm
 			mapping = settings.midi_mapping["arm"]
 			if not isinstance(mapping, MIDI.MIDICommand):
@@ -119,7 +119,7 @@ class MixerControl(Control):
 		
 		track = self.song.view.selected_track
 		if track.can_be_armed:
-			track.arm = self.auto_arm
+			track.arm = settings.auto_arm
 		
 		if settings.auto_arm:
 			self.song.view.add_selected_track_listener(self.on_track_selected)
