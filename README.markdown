@@ -1,7 +1,7 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.1.7 – released Jun 16, 2011.
+Current version is 1.1.8 – released Jun 22, 2011.
 
 
 Control the currently selected track via common MIDI messages
@@ -76,6 +76,12 @@ You can change them there to match your needs, but be careful not to use the sam
 
 Changelog
 ---------
+
+### Version 1.1.8 (released Jun 22, 2011)
+
+Auto-arm track on selection now works when using the mouse! 
+Added _scrubbing_ in Arrangement-View as well as _select playing clip-slot_ in Session-View.
+
 
 ### Version 1.1.7 (released Jun 16, 2011)
 
