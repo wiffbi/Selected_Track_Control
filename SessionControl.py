@@ -64,7 +64,7 @@ class SessionControl(Control):
 	
 	
 	def on_track_selected(self):
-		self.select_playing_clip(127, None)
+		self.select_playing_clip(127, MIDI.ABSOLUTE, MIDI.NOTEON_STATUS)
 	
 	
 	def select_playing_clip(self, value, mode, status):
