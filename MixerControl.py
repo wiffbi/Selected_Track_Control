@@ -57,6 +57,10 @@ class MixerControl(Control):
 			("input_sub_rotate", self.input_sub_rotate),
 			("input_none", self.input_none),
 			
+			("output_rotate", self.output_rotate),
+			("output_sub_rotate", self.output_sub_rotate),
+			("output_none", self.output_none),
+			
 			("volume", self.set_volume),
 			("pan", self.set_pan)
 		)
@@ -293,3 +297,14 @@ class MixerControl(Control):
 		track = self.song.view.selected_track
 		track.current_input_routing = track.input_routings[-1]
 	
+	def output_rotate(self, value, mode, status):
+		track = self.song.view.selected_track
+		track.current_output_routing = track.output_routings[self.get_routing_index(value, mode, status, track.current_output_routing, track.output_routings)]
+
+	def output_sub_rotate(self, value, mode, status):
+		track = self.song.view.selected_track
+		track.current_output_sub_routing = track.output_sub_routings[self.get_routing_index(value, mode, status, track.current_output_sub_routing, track.output_sub_routings)]
+
+	def output_none(self, value, mode, status):
+		track = self.song.view.selected_track
+		track.current_output_routing = track.output_routings[-1]
