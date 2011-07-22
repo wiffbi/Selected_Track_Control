@@ -113,7 +113,7 @@ class MixerControl(Control):
 	
 	
 	def toggle_auto_arm(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		settings.auto_arm = not settings.auto_arm
 		
@@ -139,16 +139,18 @@ class MixerControl(Control):
 				if not t == track and t.can_be_armed:
 					t.arm = False
 	def toggle_arm(self, value, mode):
-		if value:
-			# toggle exclusive depending on settings
-			self.toggle_arm_track(self.song.view.selected_track, self.song.exclusive_arm)
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		# toggle exclusive depending on settings
+		self.toggle_arm_track(self.song.view.selected_track, self.song.exclusive_arm)
 	def toggle_arm_exclusive(self, value, mode):
-		if value:
-			# toggle exclusive depending on settings
-			self.toggle_arm_track(self.song.view.selected_track, (not self.song.exclusive_arm))
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		# toggle exclusive depending on settings
+		self.toggle_arm_track(self.song.view.selected_track, (not self.song.exclusive_arm))
 	
 	def arm_kill(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		for t in self.song.tracks:
 			if t.can_be_armed:
@@ -162,16 +164,18 @@ class MixerControl(Control):
 				if not t == track:
 					t.solo = False
 	def toggle_solo(self, value, mode):
-		if value:
-			# toggle exclusive depending on settings
-			self.toggle_solo_track(self.song.view.selected_track, self.song.exclusive_solo)
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		# toggle exclusive depending on settings
+		self.toggle_solo_track(self.song.view.selected_track, self.song.exclusive_solo)
 	def toggle_solo_exclusive(self, value, mode):
-		if value:
-			# toggle exclusive depending on settings
-			self.toggle_solo_track(self.song.view.selected_track, (not self.song.exclusive_solo))
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		# toggle exclusive depending on settings
+		self.toggle_solo_track(self.song.view.selected_track, (not self.song.exclusive_solo))
 	
 	def solo_kill(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		for t in self.get_tracks():
 			t.solo = False
@@ -184,20 +188,22 @@ class MixerControl(Control):
 				if not t == track:
 					t.mute = False
 	def toggle_mute(self, value, mode):
-		if value:
-			self.toggle_mute_track(self.song.view.selected_track, False)
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		self.toggle_mute_track(self.song.view.selected_track, False)
 	def toggle_mute_exclusive(self, value, mode):
-		if value:
-			self.toggle_mute_track(self.song.view.selected_track, True)
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		self.toggle_mute_track(self.song.view.selected_track, True)
 		
 	def mute_kill(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		for t in self.get_tracks():
 			t.mute = False
 	
 	def mute_flip(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		for t in self.song.tracks:
 			t.mute = not t.mute
@@ -242,7 +248,7 @@ class MixerControl(Control):
 	
 	
 	def switch_monitoring(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		track = self.song.view.selected_track
 		if (hasattr(track, "current_monitoring_state")):

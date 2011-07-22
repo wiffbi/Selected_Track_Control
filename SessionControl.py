@@ -68,7 +68,7 @@ class SessionControl(Control):
 	
 	
 	def select_playing_clip(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		
 		for clip_slot in self.song.view.selected_track.clip_slots:
@@ -77,14 +77,16 @@ class SessionControl(Control):
 	
 	
 	def toggle_auto_select_playing_clip(self, value, mode):
-		if value:
-			settings.auto_select_playing_clip = not settings.auto_select_playing_clip
-			
-			if settings.auto_select_playing_clip:
-				self.on_track_selected()
-				self.song.view.add_selected_track_listener(self.on_track_selected)
-			else:
-				self.song.view.remove_selected_track_listener(self.on_track_selected)
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		
+		settings.auto_select_playing_clip = not settings.auto_select_playing_clip
+		
+		if settings.auto_select_playing_clip:
+			self.on_track_selected()
+			self.song.view.add_selected_track_listener(self.on_track_selected)
+		else:
+			self.song.view.remove_selected_track_listener(self.on_track_selected)
 	
 	
 	
@@ -139,19 +141,19 @@ class SessionControl(Control):
 #		log("toggle_mute_selected_clip done")
 	
 	def fire_selected_scene(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		self.song.view.selected_scene.fire()
 	
 	def fire_next_scene(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		scene = self.get_scene_by_delta(self.song.view.selected_scene, 1)
 		scene.fire()
 		self.song.view.selected_scene = scene
 		
 	def fire_previous_scene(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		scene = self.get_scene_by_delta(self.song.view.selected_scene, -1)
 		scene.fire()
@@ -167,11 +169,13 @@ class SessionControl(Control):
 		else:
 			self.song.view.selected_scene = self.get_scene_by_delta(self.song.view.selected_scene, value)
 	def select_first_scene(self, value, mode):
-		if value:
-			self.song.view.selected_scene = self.song.scenes[0]
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		self.song.view.selected_scene = self.song.scenes[0]
 	def select_last_scene(self, value, mode):
-		if value:
-			self.song.view.selected_scene = self.song.scenes[len(self.song.scenes)-1]
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		self.song.view.selected_scene = self.song.scenes[len(self.song.scenes)-1]
 	
 	
 	def scroll_tracks(self, value, mode):
@@ -187,7 +191,7 @@ class SessionControl(Control):
 	
 	
 	def select_first_track(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		tracks = self.song.tracks
 		if self.song.view.selected_track == self.song.master_track:
@@ -198,7 +202,7 @@ class SessionControl(Control):
 		self.auto_arm_track(self.song.view.selected_track)
 	
 	def select_last_track(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		if self.song.view.selected_track == self.song.master_track:
 			return
@@ -213,7 +217,7 @@ class SessionControl(Control):
 		self.auto_arm_track(self.song.view.selected_track)
 	
 	def stop_selected_track(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		for clip_slot in self.song.view.selected_track.clip_slots:
 			if clip_slot.has_clip and clip_slot.clip.is_playing:
@@ -225,7 +229,7 @@ class SessionControl(Control):
 	
 	
 	def fire_selected_clip_slot(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		self.song.view.highlighted_clip_slot.fire()
 	
@@ -267,21 +271,21 @@ class SessionControl(Control):
 	
 	
 	def fire_next_clip_slot(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		self.fire_clip_slot_by_delta(1, False)
 		
 	def fire_next_available_clip_slot(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		self.fire_clip_slot_by_delta(1, True)
 	
 	def fire_previous_clip_slot(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		self.fire_clip_slot_by_delta(-1, False)
 		
 	def fire_previous_available_clip_slot(self, value, mode):
-		if not value:
+		if mode == MIDI.CC_STATUS and not value:
 			return
 		self.fire_clip_slot_by_delta(-1, True)

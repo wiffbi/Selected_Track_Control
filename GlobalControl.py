@@ -54,7 +54,7 @@ class GlobalControl(Control):
 
 	
 	def play_stop(self, value, mode):
-		if not value: # ignore 0 values from CC-pads
+		if mode == MIDI.CC_STATUS and not value: # ignore 0 values from CC-pads
 			return
 		if self.song.is_playing:
 			self.song.stop_playing()
@@ -62,7 +62,7 @@ class GlobalControl(Control):
 			self.song.start_playing()
 	
 	def play_pause(self, value, mode):
-		if not value: # ignore 0 values from CC-pads
+		if mode == MIDI.CC_STATUS and not value: # ignore 0 values from CC-pads
 			return
 		if self.song.is_playing:
 			self.song.stop_playing()
@@ -70,7 +70,7 @@ class GlobalControl(Control):
 			self.song.continue_playing()
 	
 	def play_selection(self, value, mode):
-		if not value: # ignore 0 values from CC-pads
+		if mode == MIDI.CC_STATUS and not value: # ignore 0 values from CC-pads
 			return
 		if self.song.is_playing:
 			self.song.stop_playing()
@@ -78,41 +78,51 @@ class GlobalControl(Control):
 			self.song.play_selection()
 	
 	def undo(self, value, mode):
-		if value:
-			self.song.undo()
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		self.song.undo()
 	
 	def redo(self, value, mode):
-		if value:
-			self.song.redo()
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		self.song.redo()
 	
 	
 	
 	
 	def toggle_overdub(self, value, mode):
-		if value:
-			self.song.overdub = not self.song.overdub
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		self.song.overdub = not self.song.overdub
 	
 	def disable_overdub(self, value, mode):
+		if mode == MIDI.CC_STATUS and not value:
+			return
 		self.song.overdub = 0
 	
 	
 	def toggle_record(self, value, mode):
-		if value:
-			self.song.record_mode = not self.song.record_mode
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		self.song.record_mode = not self.song.record_mode
 	def toggle_punchin(self, value, mode):
-		if value:
-			self.song.punch_in = not self.song.punch_in
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		self.song.punch_in = not self.song.punch_in
 	def toggle_punchout(self, value, mode):
-		if value:
-			self.song.punch_out = not self.song.punch_out
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		self.song.punch_out = not self.song.punch_out
 		
 	def toggle_metronome(self, value, mode):
-		if value:
-			self.song.metronome = not self.song.metronome
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		self.song.metronome = not self.song.metronome
 	
 	def toggle_loop(self, value, mode):
-		if value:
-			self.song.loop = not self.song.loop
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		self.song.loop = not self.song.loop
 		
 	def move_loop_by(self, value, mode):
 		self.song.loop_start = self.song.loop_start + value
@@ -133,5 +143,7 @@ class GlobalControl(Control):
 			self.song.tempo = self.song.tempo + d_value
 	
 	def tap_tempo(self, value, mode):
-		if value and self.song.tap_tempo:
+		if mode == MIDI.CC_STATUS and not value:
+			return
+		if self.song.tap_tempo:
 			self.song.tap_tempo()
