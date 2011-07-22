@@ -42,6 +42,11 @@ midi_mapping = {
 	"mute_flip": Note(9),
 	"switch_monitoring": Note(6),
 	
+	"input_rotate": (Note(60), CC(60, ABSOLUTE)),
+	"input_sub_rotate": (Note(61), CC(61, ABSOLUTE)),
+	"input_none": Note(62),
+	
+	
 	"volume": (CC(22), CC(7, ABSOLUTE)),
 	"pan": (CC(23), CC(10, ABSOLUTE)),
 	

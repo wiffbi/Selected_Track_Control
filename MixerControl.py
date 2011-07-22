@@ -53,6 +53,10 @@ class MixerControl(Control):
 			("reset_volume", self.reset_volume),
 			("switch_monitoring", self.switch_monitoring),
 			
+			("input_rotate", self.input_rotate),
+			("input_sub_rotate", self.input_sub_rotate),
+			("input_none", self.input_none),
+			
 			("volume", self.set_volume),
 			("pan", self.set_pan)
 		)
@@ -247,10 +251,45 @@ class MixerControl(Control):
 			param.value = 0.0
 	
 	
-	def switch_monitoring(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def switch_monitoring(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		track = self.song.view.selected_track
 		if (hasattr(track, "current_monitoring_state")):
 			track.current_monitoring_state = (track.current_monitoring_state + 1) % len(track.monitoring_states.values)
-
+	
+	
+	
+	
+	
+	def get_routing_index(self, value, mode, status, current_routing, routings):
+		routings_len = len(routings)
+		if status == MIDI.CC_STATUS and mode == MIDI.ABSOLUTE:
+			return min(value/(127/routings_len), routings_len)
+		else:
+			# tuple does not have index-function *urgh*
+			i = 0
+			for routing in routings:
+				if routing == current_routing:
+					break
+				i = i+1
+			if mode == MIDI.ABSOLUTE:
+				i = i+1
+			else:
+				i = i+value
+			
+			i = i % routings_len
+		return i
+		
+	def input_rotate(self, value, mode, status):
+		track = self.song.view.selected_track
+		track.current_input_routing = track.input_routings[self.get_routing_index(value, mode, status, track.current_input_routing, track.input_routings)]
+	
+	def input_sub_rotate(self, value, mode, status):
+		track = self.song.view.selected_track
+		track.current_input_sub_routing = track.input_sub_routings[self.get_routing_index(value, mode, status, track.current_input_sub_routing, track.input_sub_routings)]
+	
+	def input_none(self, value, mode, status):
+		track = self.song.view.selected_track
+		track.current_input_routing = track.input_routings[-1]
+	
