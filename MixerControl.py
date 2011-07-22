@@ -74,7 +74,7 @@ class MixerControl(Control):
 		if isinstance(mappings, MIDI.MIDICommand):
 			mappings = (mappings,)
 		
-		callback = lambda value, mode : self.set_send(i, value, mode)
+		callback = lambda value, mode, status : self.set_send(i, value, mode, status)
 		
 		for m in mappings:
 			self.selected_track_controller.register_midi_callback(callback, m.key, m.mode, m.status, m.channel)
@@ -112,8 +112,8 @@ class MixerControl(Control):
 			#		t.arm = False
 	
 	
-	def toggle_auto_arm(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def toggle_auto_arm(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		settings.auto_arm = not settings.auto_arm
 		
@@ -138,19 +138,19 @@ class MixerControl(Control):
 			for t in self.song.tracks:
 				if not t == track and t.can_be_armed:
 					t.arm = False
-	def toggle_arm(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def toggle_arm(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		# toggle exclusive depending on settings
 		self.toggle_arm_track(self.song.view.selected_track, self.song.exclusive_arm)
-	def toggle_arm_exclusive(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def toggle_arm_exclusive(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		# toggle exclusive depending on settings
 		self.toggle_arm_track(self.song.view.selected_track, (not self.song.exclusive_arm))
 	
-	def arm_kill(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def arm_kill(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		for t in self.song.tracks:
 			if t.can_be_armed:
@@ -163,19 +163,19 @@ class MixerControl(Control):
 			for t in self.get_tracks():
 				if not t == track:
 					t.solo = False
-	def toggle_solo(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def toggle_solo(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		# toggle exclusive depending on settings
 		self.toggle_solo_track(self.song.view.selected_track, self.song.exclusive_solo)
-	def toggle_solo_exclusive(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def toggle_solo_exclusive(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		# toggle exclusive depending on settings
 		self.toggle_solo_track(self.song.view.selected_track, (not self.song.exclusive_solo))
 	
-	def solo_kill(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def solo_kill(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		for t in self.get_tracks():
 			t.solo = False
@@ -187,41 +187,41 @@ class MixerControl(Control):
 			for t in self.get_tracks():
 				if not t == track:
 					t.mute = False
-	def toggle_mute(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def toggle_mute(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		self.toggle_mute_track(self.song.view.selected_track, False)
-	def toggle_mute_exclusive(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def toggle_mute_exclusive(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		self.toggle_mute_track(self.song.view.selected_track, True)
 		
-	def mute_kill(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def mute_kill(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		for t in self.get_tracks():
 			t.mute = False
 	
-	def mute_flip(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def mute_flip(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		for t in self.song.tracks:
 			t.mute = not t.mute
 	
 	
 	
-	def set_volume(self, value, mode):
+	def set_volume(self, value, mode, status):
 		param = self.song.view.selected_track.mixer_device.volume
 		if mode == MIDI.ABSOLUTE:
 			param.value = value/127.0
 		else:
 			param.value = max(0.0, min(1.0, param.value + (value/200.0)))
 	
-	def reset_volume(self, value, mode):
+	def reset_volume(self, value, mode, status):
 		self.song.view.selected_track.mixer_device.volume.value = settings.volume_default
 	
 	
-	def set_pan(self, value, mode):
+	def set_pan(self, value, mode, status):
 		param = self.song.view.selected_track.mixer_device.panning
 		if mode == MIDI.ABSOLUTE:
 			param.value = (value-64)/64.0
@@ -229,11 +229,11 @@ class MixerControl(Control):
 		else:
 			param.value = max(-1.0, min(1.0, param.value + (value/100.0)))
 	
-	def reset_pan(self, value, mode):
+	def reset_pan(self, value, mode, status):
 		self.song.view.selected_track.mixer_device.panning.value = 0.0
 	
 	
-	def set_send(self, i, value, mode):
+	def set_send(self, i, value, mode, status):
 		param = self.song.view.selected_track.mixer_device.sends[i]
 		if param:
 			if mode == MIDI.ABSOLUTE:

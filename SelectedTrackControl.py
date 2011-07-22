@@ -103,7 +103,7 @@ class SelectedTrackControl:
 			value = MIDI.relative_to_signed_int[mode](value)
 		
 		for callback in callbacks:
-			callback(value, mode)
+			callback(value, mode, status)
 
 
 	def suggest_input_port(self):

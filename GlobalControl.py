@@ -48,102 +48,102 @@ class GlobalControl(Control):
 			("redo", self.redo),
 		)
 	
-	def scrub_by(self, value, mode):
+	def scrub_by(self, value, mode, status):
 		d_value = MIDI.relative_to_signed_int[mode](value)
 		self.song.scrub_by(d_value)
 
 	
-	def play_stop(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value: # ignore 0 values from CC-pads
+	def play_stop(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value: # ignore 0 values from CC-pads
 			return
 		if self.song.is_playing:
 			self.song.stop_playing()
 		else:
 			self.song.start_playing()
 	
-	def play_pause(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value: # ignore 0 values from CC-pads
+	def play_pause(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value: # ignore 0 values from CC-pads
 			return
 		if self.song.is_playing:
 			self.song.stop_playing()
 		else:
 			self.song.continue_playing()
 	
-	def play_selection(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value: # ignore 0 values from CC-pads
+	def play_selection(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value: # ignore 0 values from CC-pads
 			return
 		if self.song.is_playing:
 			self.song.stop_playing()
 		else:
 			self.song.play_selection()
 	
-	def undo(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def undo(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		self.song.undo()
 	
-	def redo(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def redo(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		self.song.redo()
 	
 	
 	
 	
-	def toggle_overdub(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def toggle_overdub(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		self.song.overdub = not self.song.overdub
 	
-	def disable_overdub(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def disable_overdub(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		self.song.overdub = 0
 	
 	
-	def toggle_record(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def toggle_record(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		self.song.record_mode = not self.song.record_mode
-	def toggle_punchin(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def toggle_punchin(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		self.song.punch_in = not self.song.punch_in
-	def toggle_punchout(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def toggle_punchout(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		self.song.punch_out = not self.song.punch_out
 		
-	def toggle_metronome(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def toggle_metronome(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		self.song.metronome = not self.song.metronome
 	
-	def toggle_loop(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def toggle_loop(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		self.song.loop = not self.song.loop
 		
-	def move_loop_by(self, value, mode):
+	def move_loop_by(self, value, mode, status):
 		self.song.loop_start = self.song.loop_start + value
 		
-	def move_loop_left_bracket_by(self, value, mode):
+	def move_loop_left_bracket_by(self, value, mode, status):
 		d_value = MIDI.relative_to_signed_int[mode](value)
 		self.move_loop_by(d_value)
 		self.move_loop_right_bracket_by(-d_value)
 	
-	def move_loop_right_bracket_by(self, value, mode):
+	def move_loop_right_bracket_by(self, value, mode, status):
 		self.song.loop_length = self.song.loop_length + value
 	
-	def set_tempo(self, value, mode):
+	def set_tempo(self, value, mode, status):
 		if mode == MIDI.ABSOLUTE:
 			self.song.tempo = settings.tempo_min + value*self.tempo_step
 		else:
 			d_value = MIDI.relative_to_signed_int[mode](value)
 			self.song.tempo = self.song.tempo + d_value
 	
-	def tap_tempo(self, value, mode):
-		if mode == MIDI.CC_STATUS and not value:
+	def tap_tempo(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
 			return
 		if self.song.tap_tempo:
 			self.song.tap_tempo()
