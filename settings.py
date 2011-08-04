@@ -7,12 +7,113 @@ from MIDI import * # import MIDI status codes
 debug_mode = False
 
 """
-	<setting>: Note (<MIDI note#> [, <MIDI channel>])
-	<setting>: CC (<MIDI CC#> [, <mapping mode> [, <MIDI channel>]])
+	"<setting>": Note (<MIDI note#> [, <MIDI channel>])
+	"<setting>": CC (<MIDI CC#> [, <mapping mode> [, <MIDI channel>]])
 	
-	if <mapping mode> is ommitted, it is assumed MIDI.RELATIVE_TWO_COMPLIMENT (see MIDI.py for other modes)
-	if <MIDI channel> is ommitted, it is assumed MIDI.DEFAULT_CHANNEL (see MIDI.py)
+	if <mapping mode> is ommitted, it is assumed MIDI.RELATIVE_TWO_COMPLIMENT
+		other modes are: ABSOLUTE, RELATIVE_BINARY_OFFSET, RELATIVE_SIGNED_BIT, RELATIVE_SIGNED_BIT2 
+		see the documentation of your device which type MIDI CC it sends
 	
+	if <MIDI channel> is ommitted, it is assumed MIDI.DEFAULT_CHANNEL
+		the DEFAULT_CHANNEL channel is set to 0 (ie. channel 1 if you count from 1-16)
+		MIDI channels are zero-indexed, ie. you count from 0 to 15
+		you can change DEFAULT_CHANNEL in MIDI.py
+	
+	
+	
+	
+	Some examples for setting up your own mappings:
+	
+	
+	- Mapping "arm" to Note #64 on MIDI channel 4 (if you count channels 1-16):
+		
+		"arm": Note(64, 3),
+	
+	
+	- Mapping "pan" to an encoder with CC #23 on MIDI channel 8 (if you count channels 1-16):
+	  Note: encoders usually send RELATIVE values - in this example in RELATIVE_TWO_COMPLIMENT format
+
+		"pan": CC(23, RELATIVE_TWO_COMPLIMENT, 7),
+	
+	
+	- Mapping "volume" to a fader with CC #7 on MIDI channel 2 (if you count channels 1-16):
+	  Note: faders usually send ABSOLUTE values
+
+		"arm": CC(7, ABSOLUTE, 1),
+	
+	
+	- Mapping sends
+	  Sends are mapped the same way as other controls, only that you can provide multiple CC()-defintions
+	  in a so called "tuple" (that is basically a list). The first CC maps to "Send 1", the second CC 
+	  to "Send 2", etc.
+	  
+	  A tuple is defined like so:
+	  
+	  (<element>, <element>, <element>)
+	  
+	  A basic example, mapping knobs with CC #12-19 on MIDI channel 16 (if you count channels 1-16):
+	  Note: knobs usually send ABSOLUTE values
+	  
+		"sends": (
+			CC(12, ABSOLUTE, 15),
+			CC(13, ABSOLUTE, 15),
+			CC(14, ABSOLUTE, 15),
+			CC(15, ABSOLUTE, 15),
+			CC(16, ABSOLUTE, 15),
+			CC(17, ABSOLUTE, 15),
+			CC(18, ABSOLUTE, 15),
+			CC(19, ABSOLUTE, 15),
+		),
+	
+	
+	
+	
+	
+	
+	- ADVANCED FEATURE: binding multiple MIDI messages to the same control
+	  
+	  This is mainly useful to support multiple MIDI bindings in STC by default.
+	  Note that e.g. volume is mapped by default to MIDI CC #22 as RELATIVE_TWO_COMPLIMENT and at the 
+	  same time to MIDI CC #7 as ABSOLUTE.
+	  See documentation here: http://stc.wiffbi.com/midi-implementation-chart/
+	  
+	  Binding multiple MIDI messages to one control is done by using a tuple of CC/Note-commands. 
+	  It is actually the same as defining controls for sends. Looking at the default defintion
+	  for "volume"
+	
+		"volume": (CC(22), CC(7, ABSOLUTE)),
+	
+	  and adding some white-space/newlines
+	
+		"volume": (
+			CC(22),
+			CC(7, ABSOLUTE)
+		),
+	  
+	  reveals, that is looks similar to the definition of sends described earlier.
+	  
+	  BONUS: even a single send-control can be mapped to multiple MIDI-commands. As sends are defined as 
+	  a tuple of CC-commands, we can instead of a single CC-command use a tuple of CC-commands. This 
+	  results in a tuple of tuples of CC-commands.
+	  
+	  The default definition of sends are such a construct:
+	
+		"sends": (
+			(CC(24), CC(12, ABSOLUTE)),
+			(CC(25), CC(13, ABSOLUTE)),
+			(CC(26), CC(14, ABSOLUTE)),
+			(CC(27), CC(15, ABSOLUTE)),
+			(CC(28), CC(16, ABSOLUTE)),
+			(CC(29), CC(17, ABSOLUTE)),
+			(CC(30), CC(18, ABSOLUTE)),
+			(CC(31), CC(19, ABSOLUTE)),
+		),
+	  
+	  "Send 1" is mapped to CC #24 in RELATIVE_TWO_COMPLIMENT on the DEFAULT_CHANNEL as well as to 
+	           CC #12 in ABSOLUTE on the DEFAULT_CHANNEL
+	  "Send 2" is mapped to CC #25 in RELATIVE_TWO_COMPLIMENT on the DEFAULT_CHANNEL as well as to 
+	           CC #14 in ABSOLUTE on the DEFAULT_CHANNEL
+	  ...
 """
 
 # these values are only used if you map tempo-control to an absolute controller
