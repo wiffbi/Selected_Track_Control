@@ -12,6 +12,9 @@ class DeviceControl(Control):
 	def __init__(self, c_instance, selected_track_controller):
 		Control.__init__(self, c_instance, selected_track_controller)
 		
+		self._device = None
+		self._locked_to_device = False
+		
 		self.bank = 0
 		self.params_per_bank = len(settings.midi_mapping["device_params"])
 		self.max_banks = int(math.ceil(128.0/self.params_per_bank))
@@ -46,6 +49,21 @@ class DeviceControl(Control):
 	
 	
 	
+	def set_device(self, device):
+		self._device = device
+		#log("%s gesetzt" % device.name)
+	
+	def set_lock_to_device(self, lock, device):
+		assert isinstance(lock, type(False))
+		assert (lock is not self._locked_to_device)
+		if lock:
+			self.set_device(device)
+		else:
+			assert (device == self._device)
+		
+		self._locked_to_device = lock
+	
+	
 	def setup_device_param_set(self, i, mappings):
 		# always make sure mappings is a tuple
 		if isinstance(mappings, MIDI.MIDICommand):
@@ -59,7 +77,10 @@ class DeviceControl(Control):
 	
 	def set_device_param(self, i, value, mode, status):
 		track = self.song.view.selected_track
-		device = track.view.selected_device
+		if self._device:
+			device = self._device
+		else:
+			device = track.view.selected_device
 		if not device:
 			return
 		

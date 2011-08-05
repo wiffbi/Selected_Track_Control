@@ -27,11 +27,13 @@ class SelectedTrackControl:
 		# parse midi_mapping recursive for MIDI.CC
 		self.mapping_parse_recursive(settings.midi_mapping.values())
 		
+		self._device_control = DeviceControl(c_instance, self)
+		
 		self.components = (
 			SessionControl(c_instance, self),
 			MixerControl(c_instance, self),
 			GlobalControl(c_instance, self),
-			DeviceControl(c_instance, self),
+			self._device_control,
 		)
 		
 	def mapping_parse_recursive(self, mapping):
@@ -115,12 +117,20 @@ class SelectedTrackControl:
 		return str('')
 
 	def can_lock_to_devices(self):
-		return False
+		return True
 
-	def can_lock_to_device(self):
-		return False
+	def lock_to_device(self, device):
+		assert (self._device_control != None)
+		self._device_control.set_lock_to_device(True, device)
+
+	def unlock_from_device(self, device):
+		assert (self._device_control != None)
+		self._device_control.set_lock_to_device(False, device)
 	
-	
+	def set_appointed_device(self, device):
+		assert ((device == None) or isinstance(device, Live.Device.Device))
+		assert (self._device_control != None)
+		self._device_control.set_device(device)
 	
 	
 	# internal method to register callbacks from different controls
