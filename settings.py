@@ -255,7 +255,7 @@ midi_mapping = {
 	
 	
 	# device control
-	"scroll_devices": (CC(32), CC(13, ABSOLUTE)),
+	"scroll_devices": CC(32),
 	"select_instrument": Note(66),
 	"prev_device": Note(67),
 	"next_device": Note(68),
