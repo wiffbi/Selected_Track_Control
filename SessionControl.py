@@ -43,10 +43,10 @@ class SessionControl(Control):
 			("scroll_scenes", self.scroll_scenes),
 			("scroll_tracks", self.scroll_tracks),
 			
-			("prev_scene", lambda value, mode: self.scroll_scenes(-1, MIDI.RELATIVE_TWO_COMPLIMENT)),
-			("next_scene", lambda value, mode: self.scroll_scenes(1, MIDI.RELATIVE_TWO_COMPLIMENT)),
-			("prev_track", lambda value, mode: self.scroll_tracks(-1, MIDI.RELATIVE_TWO_COMPLIMENT)),
-			("next_track", lambda value, mode: self.scroll_tracks(1, MIDI.RELATIVE_TWO_COMPLIMENT))
+			("prev_scene", lambda value, mode, status: self.scroll_scenes(-1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+			("next_scene", lambda value, mode, status: self.scroll_scenes(1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+			("prev_track", lambda value, mode, status: self.scroll_tracks(-1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+			("next_track", lambda value, mode, status: self.scroll_tracks(1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS))
 		)
 	
 	
