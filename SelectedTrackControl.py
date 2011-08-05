@@ -8,6 +8,7 @@ import settings
 from SessionControl import SessionControl
 from MixerControl import MixerControl
 from GlobalControl import GlobalControl
+from DeviceControl import DeviceControl
 
 class SelectedTrackControl:
 	__module__ = __name__
@@ -30,6 +31,7 @@ class SelectedTrackControl:
 			SessionControl(c_instance, self),
 			MixerControl(c_instance, self),
 			GlobalControl(c_instance, self),
+			DeviceControl(c_instance, self),
 		)
 		
 	def mapping_parse_recursive(self, mapping):
