@@ -4,7 +4,7 @@ from MIDI import * # import MIDI status codes
 
 
 # debug_mode: whether the log-function should output to logfile
-debug_mode = True
+debug_mode = False
 
 """
 	"<setting>": Note (<MIDI note#> [, <MIDI channel>])
