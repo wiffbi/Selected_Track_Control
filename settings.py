@@ -126,6 +126,9 @@ scrub_increment = 4 # scrubs by ticks
 
 auto_select_playing_clip = False
 
+# this feature is currently only planned
+#reset_device_bank = False # Reset device-bank to 0 when selecting another device
+
 auto_arm = False # default behaviour for auto-arming a track on selection, either False or True
 has_midi_loopback = False # auto-arm on selection (including when selecting via mouse) usually only works with the STC.app on Mac, which provides MIDI-loopback-functionality. If you use STC.app, set has_midi_loopback = True, else set has_midi_loopback = False. If set to False, auto-arm on selection works even without STC.app, but only if you use STC-MIDI Remote Script and MIDI to select a track (so if you select a track via mouse, it will not be automatically armed)
 
@@ -244,5 +247,40 @@ midi_mapping = {
 	"disable_overdub": Note(15),
 	"record": Note(19),
 	"punch_in": Note(16),
-	"punch_out": Note(17)
+	"punch_out": Note(17),
+	
+	
+	
+	
+	
+	
+	# device control
+	"scroll_devices": CC(32),
+	"select_instrument": Note(66),
+	"prev_device": Note(67),
+	"next_device": Note(68),
+	"prev_device_bank": Note(71),
+	"next_device_bank": Note(72),
+	"reset_device_bank": Note(70),
+	"device_on_off": Note(69),
+	"device_params": (
+		(CC(33), CC(41, ABSOLUTE)),
+		(CC(34), CC(42, ABSOLUTE)),
+		(CC(35), CC(43, ABSOLUTE)),
+		(CC(36), CC(44, ABSOLUTE)),
+		(CC(37), CC(45, ABSOLUTE)),
+		(CC(38), CC(46, ABSOLUTE)),
+		(CC(39), CC(47, ABSOLUTE)),
+		(CC(40), CC(48, ABSOLUTE)),
+	),
+	"reset_device_params": (
+		Note(52),
+		Note(53),
+		Note(54),
+		Note(55),
+		Note(56),
+		Note(57),
+		Note(58),
+		Note(59),
+	),
 }
