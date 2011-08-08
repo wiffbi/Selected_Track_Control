@@ -1,13 +1,13 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.1.8 – released Jun 22, 2011.
+Current version is 1.2 – released Aug 8, 2011.
 
 
 Control the currently selected track via common MIDI messages
 -------------------------------------------------------------
 
-Selected Track Control is a *MIDI Remote Script* for Ableton Live, that gives access to common settings of the currently selected track (arm, mute, solo, volume, pan, etc.) via common MIDI messages. Furthermore some global controls are instantly mapped as well, so no manual configuration of the Live-set is necessary and these mappings are instantly available to older Live-sets as well.
+Selected Track Control is a *MIDI Remote Script* for Ableton Live, that gives access to common settings of the currently selected track (arm, mute, solo, volume, pan, etc.) as well as the currently selected device (on/off, parameters, banks) via common MIDI messages. Furthermore some global controls are instantly mapped as well, so no manual configuration of the Live-set is necessary and these mappings are instantly available to older Live-sets as well.
 
 Among the mapped functionality is:
 
@@ -76,6 +76,11 @@ You can change them there to match your needs, but be careful not to use the sam
 
 Changelog
 ---------
+
+### Version 1.2 (released Aug 8, 2011) ###
+
+Added Device selection and control
+
 
 ### Version 1.1.8 (released Jun 22, 2011)
 
