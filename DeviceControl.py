@@ -1,3 +1,5 @@
+import Live
+
 import MIDI
 import settings
 import math
@@ -179,17 +181,40 @@ class DeviceControl(Control):
 			index = index + 1
 		return -1
 	
+	def get_device_relative_recursive(self, selected_device, delta):
+		container = selected_device.canonical_parent # either track or chain
+		len_devices = len(container.devices)
+		index = self.get_device_index(selected_device, container.devices) + delta
+		
+		if not type(container) == type(Live.Track.Track):
+			# as we are not inside a Track, we must be inside a Rack
+			if index < 0:
+				# if first device is selected and we move left, try to move up a device_container and select the containing device
+				return self.get_device_relative_recursive(container.canonical_parent, index+1)
+			elif index >= len_devices:
+				# if last device is selected and we move right, try to move up a device_container and select next device
+				#return self.get_device_relative_recursive(container.canonical_parent, index-len_devices+1)
+				# if last device is selected and we move right, try to move up a device_container and select the containing device
+				return self.get_device_relative_recursive(container.canonical_parent, index-len_devices)
+		
+		# we cannot move further out => stay inside the index-boundary of available devices
+		index = max(0, min(len_devices-1, index))
+		
+		return container.devices[index]
+	
+	
+	
 	def scroll_devices(self, value, mode, status):
-		track = self.song.view.selected_track
-		len_devices = len(track.devices)
-		
 		if mode == MIDI.ABSOLUTE:
-			index = len_devices*value/128
+			#container = self.song.view.selected_track
+			container = self.song.view.selected_track.view.selected_device.canonical_parent
+			len_devices = len(container.devices)
+			device = container.devices[len_devices*value/128]
 		else:
-			index = self.get_device_index(track.view.selected_device, track.devices)
-			index = max(0, min(len_devices-1, index + value))
+			# relative navigation
+			device = self.get_device_relative_recursive(self.song.view.selected_track.view.selected_device, value)
 		
-		self.song.view.select_device(track.devices[index])
+		self.song.view.select_device(device)
 	
 	def prev_device(self, value, mode, status):
 		if status == MIDI.CC_STATUS and not value:
