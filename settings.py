@@ -262,6 +262,7 @@ midi_mapping = {
 	"prev_device_bank": Note(71),
 	"next_device_bank": Note(72),
 	"reset_device_bank": Note(70),
+	"device_on_off": Note(69),
 	"device_params": (
 		(CC(33), CC(41, ABSOLUTE)),
 		(CC(34), CC(42, ABSOLUTE)),

@@ -24,11 +24,13 @@ class DeviceControl(Control):
 		
 		if "device_params" in settings.midi_mapping:
 			for i in range(len(settings.midi_mapping["device_params"])):
-				self.setup_device_param_set(i, settings.midi_mapping["device_params"][i])
+				# begin with parameter 1, as 0 is device-on/off
+				self.setup_device_param_set(i+1, settings.midi_mapping["device_params"][i])
 		
 		if "reset_device_params" in settings.midi_mapping:
 			for i in range(len(settings.midi_mapping["reset_device_params"])):
-				self.setup_device_param_reset(i, settings.midi_mapping["reset_device_params"][i])
+				# begin with parameter 1, as 0 is device-on/off
+				self.setup_device_param_reset(i+1, settings.midi_mapping["reset_device_params"][i])
 	
 	
 	def get_midi_bindings(self):
@@ -37,7 +39,7 @@ class DeviceControl(Control):
 			("prev_device", self.prev_device),
 			("next_device", self.next_device),
 			
-			
+			("device_on_off", self.device_on_off),
 			("select_device_bank", self.select_device_bank),
 			("prev_device_bank", self.prev_device_bank),
 			("next_device_bank", self.next_device_bank),
@@ -84,17 +86,22 @@ class DeviceControl(Control):
 		if not device:
 			return
 		
-		i = i + self.params_per_bank*self.bank
+		# if param index == 0 => device on/off => do not apply banking!
+		if i > 0:
+			i = i + self.params_per_bank*self.bank
 		
 		param = device.parameters[i]
 		if not param:
 			return
 		
 		param_range = param.max - param.min
-		#log ("%s is_quantized: %d; default_value: %s" % (param.name, param.is_quantized, param.default_value))
 		if param.is_quantized:
 			if mode == MIDI.ABSOLUTE:
-				param.value = round(param_range*value/127.0 + param.min)
+				if status == MIDI.NOTEON_STATUS:
+					# if Note On => toggle quantized value
+					param.value = not param.value
+				else:
+					param.value = round(param_range*value/127.0 + param.min)
 			else:
 				param.value = max(param.min, min(param.max, param.value + value))
 		else:
@@ -133,6 +140,13 @@ class DeviceControl(Control):
 					param.value = param.default_value
 	
 	
+	def device_on_off(self, value, mode, status):
+		# if e.g. a pad sends CC, then ignore the off-value (same behaviour as Note-On/Note-Off)
+		if status == MIDI.CC and not value:
+			return
+		# force toggle behaviour by status == MIDI.NOTEON_STATUS
+		# this breaks controlling on/off with a knob!
+		self.set_device_param(0, value, mode, MIDI.NOTEON_STATUS)
 	
 	def select_device_bank(self, value, mode, status):
 		if mode == MIDI.ABSOLUTE:
