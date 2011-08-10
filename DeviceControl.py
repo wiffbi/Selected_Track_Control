@@ -24,6 +24,10 @@ class DeviceControl(Control):
 		#if "reset_device_bank" in settings:
 		#	TODO: add listener to tracks if selected device has changed
 		
+		if settings.auto_select_device:
+			self.song.view.add_selected_track_listener(self.auto_select_device)
+		
+		
 		if "device_params" in settings.midi_mapping:
 			for i in range(len(settings.midi_mapping["device_params"])):
 				# begin with parameter 1, as 0 is device-on/off
@@ -51,6 +55,33 @@ class DeviceControl(Control):
 			("select_instrument", self.select_instrument),
 		)
 	
+	
+	
+	
+	def auto_select_device(self):
+		select_device = None
+		index = -1
+		# loop through devices
+		for device in self.song.view.selected_track.devices:
+			i = 0
+			for name in settings.auto_select_device:
+				if device.name == name:
+					if i < index or index == -1:
+						index = i
+						select_device = device
+						if index == 0:
+							break
+				elif not index == -1 and i > index:
+					break
+					
+				i = i+1
+			
+			if index == 0:
+				break
+		if select_device:
+			#log("select %s" % select_device.name)
+			self.song.view.select_device(device)
+		
 	
 	
 	def set_device(self, device):
