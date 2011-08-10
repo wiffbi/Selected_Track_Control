@@ -29,6 +29,12 @@ More information and the app itself can be found on the [project’s homepage.](
 
 
 
+License
+-------------------
+This work is licensed under the "Simplified BSD License" / "FreeBSD License"
+see License.txt
+
+*The previous CC Attribution license did not make sense. I made this software, so you can use it, do whatever you want to it and especially have fun with it! To be nice: if you make something with it, let me know!*
 
 
 
