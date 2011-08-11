@@ -134,7 +134,8 @@ has_midi_loopback = False # auto-arm on selection (including when selecting via 
 
 # either a list of Device-names or False
 # automatically selects the device if available when switched to the track
-auto_select_device = ["Looper", "Impulse", "Simpler"]
+auto_select_device = False
+#auto_select_device = ["Looper", "Impulse", "Simpler"]
 
 
 
