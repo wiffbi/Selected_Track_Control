@@ -138,7 +138,10 @@ class DeviceControl(Control):
 					# circle through quantized values
 					p_value = param.value + value
 					if p_value > param.max:
-						p_value = param.min
+						# values can be bigger than one => take overlap and add it min
+						p_value = param.min + (p_value % (param_range + 1))
+					elif p_value < param.min:
+						p_value = param.max - ((p_value - 1) % (param_range + 1))
 					param.value = p_value
 				else:
 					# range is bigger than on/off and we have relative CC
