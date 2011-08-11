@@ -132,6 +132,13 @@ auto_select_playing_clip = False
 auto_arm = False # default behaviour for auto-arming a track on selection, either False or True
 has_midi_loopback = False # auto-arm on selection (including when selecting via mouse) usually only works with the STC.app on Mac, which provides MIDI-loopback-functionality. If you use STC.app, set has_midi_loopback = True, else set has_midi_loopback = False. If set to False, auto-arm on selection works even without STC.app, but only if you use STC-MIDI Remote Script and MIDI to select a track (so if you select a track via mouse, it will not be automatically armed)
 
+# either dict or False
+device_bestof = False
+#device_bestof = {
+#	"Impulse": (4,3,2,1,8,7,6,5),
+#	"Looper": (2,1,0),
+#}
+
 # either a list of Device-names or False
 # automatically selects the device if available when switched to the track
 auto_select_device = False

@@ -27,6 +27,17 @@ class DeviceControl(Control):
 		if settings.auto_select_device:
 			self.song.view.add_selected_track_listener(self.auto_select_device)
 		
+		if settings.device_bestof:
+			# we have best-of parameters for devices => use these parameters first, then the rest
+			for device_name, indizes in settings.device_bestof.items():
+				new_indizes = [0,] + list(indizes)
+				i = 0
+				while i < 128:
+					if i not in indizes:
+						new_indizes.append(i)
+					i = i + 1
+				settings.device_bestof[device_name] = new_indizes
+		
 		
 		if "device_params" in settings.midi_mapping:
 			for i in range(len(settings.midi_mapping["device_params"])):
@@ -63,7 +74,7 @@ class DeviceControl(Control):
 		index = -1
 		# loop through devices
 		for device in self.song.view.selected_track.devices:
-			i = 0
+			i = 1
 			for name in settings.auto_select_device:
 				if device.name == name:
 					if i < index or index == -1:
@@ -86,7 +97,9 @@ class DeviceControl(Control):
 	
 	def set_device(self, device):
 		self._device = device
-		#log("%s gesetzt" % device.name)
+		#log("Device '%s' has the following Parameters:" % device.name)
+		#for i in range(len(device.parameters)):
+		#	log("%s - %s (%s; %s - %s : %s)" % (i, device.parameters[i].name, device.parameters[i].value, device.parameters[i].min, device.parameters[i].max, device.parameters[i].is_quantized))
 	
 	def set_lock_to_device(self, lock, device):
 		assert isinstance(lock, type(False))
@@ -122,6 +135,10 @@ class DeviceControl(Control):
 		# if param index == 0 => device on/off => do not apply banking!
 		if i > 0:
 			i = i + self.params_per_bank*self.bank
+			# if there are best-of settings for the selected device
+			# then apply the index-translation
+			if device.name in settings.device_bestof:
+				i = settings.device_bestof[device.name][i]
 		
 		param = device.parameters[i]
 		if not param:
