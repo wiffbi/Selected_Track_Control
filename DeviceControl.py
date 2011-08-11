@@ -137,7 +137,7 @@ class DeviceControl(Control):
 			i = i + self.params_per_bank*self.bank
 			# if there are best-of settings for the selected device
 			# then apply the index-translation
-			if device.name in settings.device_bestof:
+			if settings.device_bestof and device.name in settings.device_bestof:
 				i = settings.device_bestof[device.name][i]
 		
 		param = device.parameters[i]
