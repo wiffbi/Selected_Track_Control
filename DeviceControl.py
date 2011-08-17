@@ -18,7 +18,10 @@ class DeviceControl(Control):
 		self._locked_to_device = False
 		
 		self.bank = 0
-		self.params_per_bank = len(settings.midi_mapping["device_params"])
+		if "device_params" in settings.midi_mapping:
+			self.params_per_bank = len(settings.midi_mapping["device_params"])
+		else:
+			self.params_per_bank = 8
 		self.max_banks = int(math.ceil(128.0/self.params_per_bank))
 		
 		#if "reset_device_bank" in settings:
