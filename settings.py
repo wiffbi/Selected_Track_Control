@@ -297,4 +297,14 @@ midi_mapping = {
 		Note(58),
 		Note(59),
 	),
+	
+	
+	
+	
+	"toggle_browser": Note(74),
+	"toggle_session_arranger": Note(75),
+	"toggle_detail": Note(76),
+	"toggle_detail_clip_device": Note(77),
+	"toggle_detail_clip": Note(78),
+	"toggle_detail_device": Note(79),
 }

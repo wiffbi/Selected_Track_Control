@@ -8,6 +8,7 @@ import settings
 from SessionControl import SessionControl
 from MixerControl import MixerControl
 from GlobalControl import GlobalControl
+from ViewControl import ViewControl
 from DeviceControl import DeviceControl
 
 class SelectedTrackControl:
@@ -33,6 +34,7 @@ class SelectedTrackControl:
 			SessionControl(c_instance, self),
 			MixerControl(c_instance, self),
 			GlobalControl(c_instance, self),
+			ViewControl(c_instance, self),
 			self._device_control,
 		)
 		
