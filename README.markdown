@@ -1,7 +1,7 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.2 – released Aug 8, 2011.
+Current version is 1.2.1 – released Aug 17, 2011.
 
 
 Control the currently selected track via common MIDI messages
@@ -82,6 +82,12 @@ You can change them there to match your needs, but be careful not to use the sam
 
 Changelog
 ---------
+
+### Version 1.2.1 (released Aug 17, 2011) ###
+
+Added View control - select which main views are visible in the GUI (Browser, Session/Arrangement, Detail Clip/Devices)
+Added ParamSetter for custom Device-handlers. Currently only Looper has a custom handler for its "State"-parameter. Note though, that Looper’s API support is very limited. Using Looper via _MIDI Remote Scripts_ is only useful if you are already in play mode (so no set-tempo functionality) and if you record for a predefined length.
+
 
 ### Version 1.2 (released Aug 8, 2011) ###
 
