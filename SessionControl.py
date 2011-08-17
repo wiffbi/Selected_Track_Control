@@ -231,7 +231,8 @@ class SessionControl(Control):
 	def fire_selected_clip_slot(self, value, mode, status):
 		if status == MIDI.CC_STATUS and not value:
 			return
-		self.song.view.highlighted_clip_slot.fire()
+		if self.song.view.highlighted_clip_slot:
+			self.song.view.highlighted_clip_slot.fire()
 	
 	
 	def get_clip_slot_by_delta_bool(self, current_clip_slot, track, d_value, bool_callable):
@@ -266,8 +267,9 @@ class SessionControl(Control):
 		else:
 			clip_slot = self.get_clip_slot_by_delta_bool(current_clip_slot, track, d_value, lambda x: True)
 		
-		clip_slot.fire()
-		self.song.view.highlighted_clip_slot = clip_slot
+		if clip_slot:
+			clip_slot.fire()
+			self.song.view.highlighted_clip_slot = clip_slot
 	
 	
 	def fire_next_clip_slot(self, value, mode, status):
