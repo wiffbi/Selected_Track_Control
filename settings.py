@@ -236,7 +236,7 @@ midi_mapping = {
 	"tempo": (CC(86), CC(20, ABSOLUTE)),
 	"tap_tempo": Note(86), # attention: Live 8 only!
 	"tempo_increase": Note(87),
-	"tempo_decrease": Note(85),
+	"tempo_decrease": Note(88),
 	
 	"play_stop": Note(20),
 	"play_pause": Note(21),
