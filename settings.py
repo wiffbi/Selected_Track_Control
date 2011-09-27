@@ -161,7 +161,7 @@ auto_select_device = False
 # 12: 1/16T 
 # 13: 1/32
 # define which quantization steps should be stepped through - use range(14) to step through all available
-clip_trigger_quantization_steps = [0, 4, 7, 9, 11, 13]
+clip_trigger_quantization_steps = [0, 1, 2, 3, 4, 5, 7, 9, 11, 13]
 
 
 
