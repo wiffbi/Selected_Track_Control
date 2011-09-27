@@ -10,6 +10,7 @@ from MixerControl import MixerControl
 from GlobalControl import GlobalControl
 from ViewControl import ViewControl
 from DeviceControl import DeviceControl
+from QuantizationControl import QuantizationControl
 
 class SelectedTrackControl:
 	__module__ = __name__
@@ -36,6 +37,7 @@ class SelectedTrackControl:
 			GlobalControl(c_instance, self),
 			ViewControl(c_instance, self),
 			self._device_control,
+			QuantizationControl(c_instance, self),
 		)
 		
 	def mapping_parse_recursive(self, mapping):

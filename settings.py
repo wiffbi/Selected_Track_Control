@@ -145,6 +145,42 @@ auto_select_device = False
 #auto_select_device = ["Looper", "Impulse", "Simpler"]
 
 
+# clip_trigger_quantization_steps reflects the quantization setting in the transport bar. 
+# 0: None 
+# 1: 8 Bars 
+# 2: 4 Bars 
+# 3: 2 Bars 
+# 4: 1 Bar 
+# 5: 1/2 
+# 6: 1/2T 
+# 7: 1/4 
+# 8: 1/4T 
+# 9: 1/8 
+# 10: 1/8T 
+# 11: 1/16 
+# 12: 1/16T 
+# 13: 1/32
+# define which quantization steps should be stepped through - use range(14) to step through all available
+clip_trigger_quantization_steps = [0, 4, 7, 9, 11, 13]
+
+
+
+# midi_recording_quantization_steps reflects the current selection of the Edit->Record Quantization menu. 
+# 0: None 
+# 1: 1/4 
+# 2: 1/8 
+# 3: 1/8T 
+# 4: 1/8 + 1/8T 
+# 5: 1/16 
+# 6: 1/16T 
+# 7: 1/16 + 1/16T 
+# 8: 1/32
+# define which quantization steps should be stepped through - use range(9) to step through all available
+midi_recording_quantization_steps = [0, 1, 2, 5, 8]
+
+
+
+
 
 midi_mapping = {
 	# track controls
@@ -264,6 +300,15 @@ midi_mapping = {
 	"punch_out": Note(17),
 	
 	
+	
+	# quantization control
+	
+	# steps through list of quantizations - see top for clip_trigger_quantization_steps
+	"clip_trigger_quantization": CC(49),
+	
+	
+	 # steps through list of quantizations - see top for midi_recording_quantization_steps
+	"midi_recording_quantization": CC(50),
 	
 	
 	
