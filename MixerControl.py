@@ -72,7 +72,7 @@ class MixerControl(Control):
 		if isinstance(mappings, MIDI.MIDICommand):
 			mappings = (mappings,)
 		
-		callback = lambda value, mode : self.reset_send(i)
+		callback = lambda value, mode, status : self.reset_send(i)
 		
 		for m in mappings:
 			self.selected_track_controller.register_midi_callback(callback, m.key, m.mode, m.status, m.channel)
