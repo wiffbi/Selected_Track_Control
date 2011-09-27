@@ -115,10 +115,10 @@ class SelectedTrackControl:
 
 
 	def suggest_input_port(self):
-		return str('STC Virtual IN')
+		return str('Kimidi Input')
 
 	def suggest_output_port(self):
-		return str('')
+		return str('Kimidi Output')
 
 	def can_lock_to_devices(self):
 		return True
