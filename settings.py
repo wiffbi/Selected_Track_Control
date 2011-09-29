@@ -160,8 +160,12 @@ auto_select_device = False
 # 11: 1/16 
 # 12: 1/16T 
 # 13: 1/32
+
 # define which quantization steps should be stepped through - use range(14) to step through all available
 clip_trigger_quantization_steps = [0, 1, 2, 3, 4, 5, 7, 9, 11, 13]
+
+# to use all quantization steps, remove the # at the beginning of the following line
+#clip_trigger_quantization_steps = range(14)
 
 
 
@@ -175,10 +179,12 @@ clip_trigger_quantization_steps = [0, 1, 2, 3, 4, 5, 7, 9, 11, 13]
 # 6: 1/16T 
 # 7: 1/16 + 1/16T 
 # 8: 1/32
+
 # define which quantization steps should be stepped through - use range(9) to step through all available
 midi_recording_quantization_steps = [0, 1, 2, 5, 8]
 
-
+# to use all quantization steps, remove the # at the beginning of the following line
+#midi_recording_quantization_steps = range(9)
 
 
 
