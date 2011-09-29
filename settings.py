@@ -304,11 +304,11 @@ midi_mapping = {
 	# quantization control
 	
 	# steps through list of quantizations - see top for clip_trigger_quantization_steps
-	"clip_trigger_quantization": CC(49),
+	"clip_trigger_quantization": (CC(49), CC(51, ABSOLUTE), Note(25)),
 	
 	
 	 # steps through list of quantizations - see top for midi_recording_quantization_steps
-	"midi_recording_quantization": CC(50),
+	"midi_recording_quantization": (CC(50), CC(52, ABSOLUTE), Note(26)),
 	
 	
 	
