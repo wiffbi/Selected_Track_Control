@@ -1,7 +1,7 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.2.2 – released Sept 27, 2011.
+Current version is 1.2.3 – released Sept 29, 2011.
 
 
 Control the currently selected track via common MIDI messages
@@ -82,6 +82,11 @@ You can change them there to match your needs, but be careful not to use the sam
 
 Changelog
 ---------
+
+### Version 1.2.3 (released Sept 29, 2011) ###
+
+Added notes and absolute MIDI CC triggers for quantization control
+
 
 ### Version 1.2.2 (released Sept 27, 2011) ###
 
