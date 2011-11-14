@@ -145,7 +145,7 @@ class SessionControl(Control):
 			track.fold_state = not track.fold_state
 		elif status == MIDI.CC_STATUS:
 			if  mode == MIDI.ABSOLUTE:
-				track.fold_state = value < 63
+				track.fold_state = value < 64
 			else:
 				track.fold_state = value < 0
 	
