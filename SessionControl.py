@@ -46,7 +46,9 @@ class SessionControl(Control):
 			("prev_scene", lambda value, mode, status: self.scroll_scenes(-1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
 			("next_scene", lambda value, mode, status: self.scroll_scenes(1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
 			("prev_track", lambda value, mode, status: self.scroll_tracks(-1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
-			("next_track", lambda value, mode, status: self.scroll_tracks(1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS))
+			("next_track", lambda value, mode, status: self.scroll_tracks(1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+			
+			("toggle_track_fold", self.toggle_track_fold)
 		)
 	
 	
@@ -127,6 +129,25 @@ class SessionControl(Control):
 	
 	
 	
+	
+	
+	def toggle_track_fold(self, value, mode, status):
+		# ignore CC toggles (like on LPD8)
+		if status == MIDI.CC_STATUS and not value:
+			return
+		
+		
+		track = self.song.view.selected_track
+		if not track.is_foldable:
+			return
+		
+		if status == MIDI.NOTEON_STATUS:
+			track.fold_state = not track.fold_state
+		elif status == MIDI.CC_STATUS:
+			if  mode == MIDI.ABSOLUTE:
+				track.fold_state = value < 63
+			else:
+				track.fold_state = value < 0
 	
 #	def toggle_mute_selected_clip(self, value, mode):
 #		log("toggle_mute_selected_clip")
