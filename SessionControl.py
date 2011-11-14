@@ -95,12 +95,22 @@ class SessionControl(Control):
 	
 	
 	
-	def get_all_tracks(self):
-		return self.song.tracks + self.song.return_tracks + (self.song.master_track, )
+	def get_all_tracks(self, only_visible = False):
+		if not only_visible:
+			return self.song.tracks + self.song.return_tracks + (self.song.master_track, )
+		tracks = []
+		for track in self.song.tracks:
+			if track.is_visible:
+				tracks.append(track)
+		for track in self.song.return_tracks:
+			tracks.append(track)
+		tracks.append(self.song.master_track)
+		return tracks
+		
 	
 	# helper function to go from one track to the other
 	def get_track_by_delta(self, track, d_value):
-		tracks = self.get_all_tracks()
+		tracks = self.get_all_tracks(only_visible = True)
 		max_tracks = len(tracks)
 		for i in range(max_tracks):
 			if track == tracks[i]:
@@ -180,7 +190,7 @@ class SessionControl(Control):
 	
 	def scroll_tracks(self, value, mode, status):
 		if mode == MIDI.ABSOLUTE:
-			tracks = self.get_all_tracks()
+			tracks = self.get_all_tracks(only_visible = True)
 			index = int(value/(128.0/len(tracks)))
 			self.song.view.selected_track = tracks[index]
 		else:

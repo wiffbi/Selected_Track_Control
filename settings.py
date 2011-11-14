@@ -273,6 +273,8 @@ midi_mapping = {
 	
 	#"toggle_mute_selected_clip": Note(50), # does not do anything
 	
+	"toggle_track_fold": CC(73),
+	
 	
 	# global controls
 	"tempo": (CC(86), CC(20, ABSOLUTE)),
