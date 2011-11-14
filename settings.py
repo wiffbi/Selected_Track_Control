@@ -274,6 +274,12 @@ midi_mapping = {
 	#"toggle_mute_selected_clip": Note(50), # does not do anything
 	
 	"toggle_track_fold": CC(73),
+	"assign_crossfade": CC(74, ABSOLUTE),
+	"toggle_crossfade_a": Note(91),
+	"toggle_crossfade_b": Note(92),
+	"assign_crossfade_none": Note(93),
+	"crossfader": (CC(75), CC(76, ABSOLUTE)),
+	"cue_volume": (CC(77), CC(78, ABSOLUTE)),
 	
 	
 	# global controls

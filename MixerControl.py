@@ -1,6 +1,7 @@
 import MIDI
 import settings
 #from Logging import log
+from Live import MixerDevice
 
 from Control import Control
 
@@ -60,6 +61,14 @@ class MixerControl(Control):
 			("output_rotate", self.output_rotate),
 			("output_sub_rotate", self.output_sub_rotate),
 			("output_none", self.output_none),
+			
+			("assign_crossfade", self.assign_crossfade),
+			("toggle_crossfade_a", lambda value, mode, status: self.toggle_crossfade(MixerDevice.MixerDevice.crossfade_assignments.A)),
+			("toggle_crossfade_b", lambda value, mode, status: self.toggle_crossfade(MixerDevice.MixerDevice.crossfade_assignments.B)),
+			("assign_crossfade_none", lambda value, mode, status: self.toggle_crossfade(MixerDevice.MixerDevice.crossfade_assignments.NONE)),
+			
+			("crossfader", self.set_crossfader),
+			("cue_volume", self.set_cue_volume),
 			
 			("volume", self.set_volume),
 			("pan", self.set_pan)
@@ -308,3 +317,68 @@ class MixerControl(Control):
 	def output_none(self, value, mode, status):
 		track = self.song.view.selected_track
 		track.current_output_routing = track.output_routings[-1]
+	
+	
+	
+	
+	def set_cue_volume(self, value, mode, status):
+		param = self.song.master_track.mixer_device.cue_volume
+		if mode == MIDI.ABSOLUTE:
+			param.value = value/127.0
+		else:
+			param.value = max(0.0, min(1.0, param.value + (value/200.0)))
+	
+	def set_crossfader(self, value, mode, status):
+		param = self.song.master_track.mixer_device.crossfader
+		if mode == MIDI.ABSOLUTE:
+			param.value = (value/127.0)*2.0 - 1.0
+		else:
+			param.value = max(-1.0, min(1.0, param.value + (value/100.0)))
+	
+	
+	def toggle_crossfade(self, crossfade_assign):
+		track = self.song.view.selected_track
+		if not track == self.song.master_track:
+			if track.mixer_device.crossfade_assign == crossfade_assign:
+				track.mixer_device.crossfade_assign = MixerDevice.MixerDevice.crossfade_assignments.NONE
+			else:
+				track.mixer_device.crossfade_assign = crossfade_assign
+	
+	
+	def assign_crossfade(self, value, mode, status):
+		# ignore CC toggles (like on LPD8)
+		if status == MIDI.CC_STATUS and not value:
+			return
+		
+		track = self.song.view.selected_track
+		if track == self.song.master_track:
+			return
+		
+		assignments = MixerDevice.MixerDevice.crossfade_assignments
+		mixer = track.mixer_device
+		
+		if status == MIDI.NOTEON_STATUS or (not mode == MIDI.ABSOLUTE and value > 0):
+			if mixer.crossfade_assign == assignments.NONE:
+				mixer.crossfade_assign = assignments.A
+			elif mixer.crossfade_assign == assignments.A:
+				mixer.crossfade_assign = assignments.B
+			else:
+				mixer.crossfade_assign = assignments.NONE
+		elif status == MIDI.CC_STATUS:
+			if mode == MIDI.ABSOLUTE:
+				if value < 64:
+					mixer.crossfade_assign = assignments.A
+				elif value > 64:
+					mixer.crossfade_assign = assignments.B
+				else:
+					mixer.crossfade_assign = assignments.NONE
+			else:
+				# relative values < 0
+				if mixer.crossfade_assign == assignments.B:
+					mixer.crossfade_assign = assignments.A
+				elif mixer.crossfade_assign == assignments.NONE:
+					mixer.crossfade_assign = assignments.B
+				else:
+					mixer.crossfade_assign = assignments.NONE
+	
+	
