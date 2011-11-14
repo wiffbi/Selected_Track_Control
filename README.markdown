@@ -1,7 +1,7 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.2.3 – released Sept 29, 2011.
+Current version is 1.2.4 – released Nov 14, 2011.
 
 
 Control the currently selected track via common MIDI messages
@@ -82,6 +82,12 @@ You can change them there to match your needs, but be careful not to use the sam
 
 Changelog
 ---------
+
+### Version 1.2.4 (released Nov 14, 2011) ###
+
+Added crossfader assignment and control. Added cue volume.
+Fixed tracks navigation when group track is folded.
+
 
 ### Version 1.2.3 (released Sept 29, 2011) ###
 
