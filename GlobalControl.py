@@ -49,8 +49,7 @@ class GlobalControl(Control):
 		)
 	
 	def scrub_by(self, value, mode, status):
-		d_value = MIDI.relative_to_signed_int[mode](value)
-		self.song.scrub_by(d_value)
+		self.song.scrub_by(value)
 
 	
 	def play_stop(self, value, mode, status):
@@ -128,9 +127,8 @@ class GlobalControl(Control):
 		self.song.loop_start = self.song.loop_start + value
 		
 	def move_loop_left_bracket_by(self, value, mode, status):
-		d_value = MIDI.relative_to_signed_int[mode](value)
-		self.move_loop_by(d_value)
-		self.move_loop_right_bracket_by(-d_value)
+		self.move_loop_by(value, mode, status)
+		self.move_loop_right_bracket_by(-value, mode, status)
 	
 	def move_loop_right_bracket_by(self, value, mode, status):
 		self.song.loop_length = self.song.loop_length + value
@@ -139,8 +137,7 @@ class GlobalControl(Control):
 		if mode == MIDI.ABSOLUTE:
 			self.song.tempo = settings.tempo_min + value*self.tempo_step
 		else:
-			d_value = MIDI.relative_to_signed_int[mode](value)
-			self.song.tempo = self.song.tempo + d_value
+			self.song.tempo = self.song.tempo + value
 	
 	def tap_tempo(self, value, mode, status):
 		if status == MIDI.CC_STATUS and not value:
