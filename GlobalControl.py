@@ -46,7 +46,34 @@ class GlobalControl(Control):
 			
 			("undo", self.undo),
 			("redo", self.redo),
+			
+			("toggle_track_collapsed", self.toggle_track_collapsed),
 		)
+	
+	def toggle_track_collapsed(self, value, mode, status):
+		# ignore CC toggles (like on LPD8)
+		if status == MIDI.CC_STATUS and not value:
+			return
+		
+		track_view = self.song.view.selected_track.view
+		
+		if status == MIDI.NOTEON_STATUS:
+			# toggle
+			track_view.is_collapsed = not track_view.is_collapsed
+		else:
+			if mode == MIDI.ABSOLUTE:
+				if value == 127:
+					# CC toggle (like on LPD8)
+					track_view.is_collapsed = not track_view.is_collapsed
+				elif value > 63:
+					track_view.is_collapsed = True
+				else:
+					track_view.is_collapsed = False
+			else:
+				if value > 0:
+					track_view.is_collapsed = True
+				else:
+					track_view.is_collapsed = False
 	
 	def scrub_by(self, value, mode, status):
 		self.song.scrub_by(value)
