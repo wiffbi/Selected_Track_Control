@@ -73,8 +73,8 @@ class SelectedTrackControl:
 		#	c.update_display()
 		pass
 	
-	
-	
+	def connect_script_instances(self, instanciated_scripts):
+		pass
 	
 	# called from Live to build the MIDI bindings
 	def build_midi_map(self, midi_map_handle):
