@@ -309,6 +309,7 @@ midi_mapping = {
 	"loop_rb_move": CC(89),
 	
 	"metronome": Note(12),
+	"back_to_arranger": Note(13),
 	"overdub": Note(14),
 	"disable_overdub": Note(15),
 	"record": Note(19),

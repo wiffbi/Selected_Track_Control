@@ -20,6 +20,7 @@ class GlobalControl(Control):
 			("overdub", self.toggle_overdub),
 			("disable_overdub", self.disable_overdub),
 			("record", self.toggle_record),
+			("back_to_arranger", self.back_to_arranger),
 			
 			("punch_in", self.toggle_punchin),
 			("punch_out", self.toggle_punchout),
@@ -126,6 +127,10 @@ class GlobalControl(Control):
 			return
 		self.song.overdub = 0
 	
+	def back_to_arranger(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
+			return
+		self.song.back_to_arranger = 0
 	
 	def toggle_record(self, value, mode, status):
 		if status == MIDI.CC_STATUS and not value:
