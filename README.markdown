@@ -85,7 +85,7 @@ Changelog
 
 ### Version 1.2.7 (released Mar 14, 2012) ###
 
-Added select scane/track by number directly by MIDI value
+Added select scene/track by number directly by MIDI value  
 Added toggle selected clipslot play/stop
 
 
