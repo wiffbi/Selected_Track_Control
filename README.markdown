@@ -1,7 +1,7 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.2.6 – released Feb 7, 2012.
+Current version is 1.2.7 – released Mar 14, 2012.
 
 
 Control the currently selected track via common MIDI messages
@@ -23,7 +23,7 @@ Among the mapped functionality is:
 For full reference see [MIDI Implementation Chart.](http://stc.wiffbi.com/midi-implementation-chart.html)
 
 
-**Note:** There is an accompanying app for Mac OS X called **![App-Icon](http://stc.wiffbi.com/img/icon-16.png) Selected Track Control**. This app transforms global keyboard shortcuts into MIDI messages, which are sent to Ableton Live (and this *MIDI Remote Script*) on a virtual MIDI-port (created by the app automatically itself). **This allows instant keyboard-control of lots of features in Ableton Live** that either would require prior, manual configuration of each Live-set or aren't possible at all (such as using the same keyboard shortcut for e.g. the mute button – but always on the selected track).
+**Note:** There is an accompanying app for Mac OS X called **![App-Icon](http://stc.wiffbi.com/img/icon-16.png) Kimidi**. This app transforms global keyboard shortcuts into MIDI messages, which are sent to Ableton Live (and this *MIDI Remote Script*) on a virtual MIDI-port (created by the app automatically itself). **This allows instant keyboard-control of lots of features in Ableton Live** that either would require prior, manual configuration of each Live-set or aren't possible at all (such as using the same keyboard shortcut for e.g. the mute button – but always on the selected track).
 
 More information and the app itself can be found on the [project’s homepage.](http://stc.wiffbi.com/)
 
@@ -82,6 +82,12 @@ You can change them there to match your needs, but be careful not to use the sam
 
 Changelog
 ---------
+
+### Version 1.2.7 (released Mar 14, 2012) ###
+
+Added select scane/track by number directly by MIDI value
+Added toggle selected clipslot play/stop
+
 
 ### Version 1.2.6 (released Feb 7, 2012) ###
 
