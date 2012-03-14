@@ -254,10 +254,7 @@ class SessionControl(Control):
 	def stop_selected_track(self, value, mode, status):
 		if status == MIDI.CC_STATUS and not value:
 			return
-		for clip_slot in self.song.view.selected_track.clip_slots:
-			if clip_slot.has_clip and clip_slot.clip.is_playing:
-				clip_slot.clip.stop()
-				break
+		self.song.view.selected_track.stop_all_clips()
 	
 	
 	
