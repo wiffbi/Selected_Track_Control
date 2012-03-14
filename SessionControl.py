@@ -43,6 +43,9 @@ class SessionControl(Control):
 			("scroll_scenes", self.scroll_scenes),
 			("scroll_tracks", self.scroll_tracks),
 			
+			("select_scene", self.select_scene),
+			("select_track", self.select_track),
+			
 			("prev_scene", lambda value, mode, status: self.scroll_scenes(-1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
 			("next_scene", lambda value, mode, status: self.scroll_scenes(1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
 			("prev_track", lambda value, mode, status: self.scroll_tracks(-1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
@@ -257,6 +260,17 @@ class SessionControl(Control):
 	
 	
 	
+	
+	
+	def select_scene(self, value, mode, status):
+		scenes = self.song.scenes
+		index = min(len(scenes)-1, value)
+		self.song.view.selected_scene = scenes[index]
+	
+	def select_track(self, value, mode, status):
+		tracks = self.song.tracks
+		index = min(len(tracks)-1, value)
+		self.song.view.selected_track = tracks[index]
 	
 	
 	def fire_selected_clip_slot(self, value, mode, status):
