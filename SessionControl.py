@@ -24,6 +24,7 @@ class SessionControl(Control):
 			("last_scene", self.select_last_scene),
 			
 			("play_selected_clip", self.fire_selected_clip_slot),
+			("toggle_selected_clip", self.toggle_selected_clip_slot),
 			("play_next_clip", self.fire_next_clip_slot),
 			("play_prev_clip", self.fire_previous_clip_slot),
 			("play_next_available_clip", self.fire_next_available_clip_slot),
@@ -279,6 +280,12 @@ class SessionControl(Control):
 		if self.song.view.highlighted_clip_slot:
 			self.song.view.highlighted_clip_slot.fire()
 	
+	def toggle_selected_clip_slot(self, value, mode, status):
+		clip_slot = self.song.view.highlighted_clip_slot
+		if clip_slot and clip_slot.has_clip and not (clip_slot.clip.is_playing or clip_slot.clip.is_triggered):
+			self.fire_selected_clip_slot(value, mode, status)
+		else:
+			self.stop_selected_track(value, mode, status)
 	
 	def get_clip_slot_by_delta_bool(self, current_clip_slot, track, d_value, bool_callable):
 		clip_slots = track.clip_slots

@@ -263,6 +263,7 @@ midi_mapping = {
 	"last_track": Note(47),
 	
 	"play_selected_clip": Note(43),
+	"toggle_selected_clip": Note(73),
 	"play_next_clip": Note(45),
 	"play_prev_clip": Note(41),
 	"play_next_available_clip": Note(44),
