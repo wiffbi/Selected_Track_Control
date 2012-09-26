@@ -1,7 +1,7 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.2.7 – released Mar 14, 2012.
+Current version is 1.2.8 – released Sept 26, 2012.
 
 
 Control the currently selected track via common MIDI messages
@@ -82,6 +82,12 @@ You can change them there to match your needs, but be careful not to use the sam
 
 Changelog
 ---------
+
+### Version 1.2.8 (released Sept 26, 2012) ###
+
+Added dedicated tart, stop and continue-playing commands - this is useful for e.g. hitting stop 3 times in row for MIDI panic functionality  
+Fixed scrub/rewind bug
+
 
 ### Version 1.2.7 (released Mar 14, 2012) ###
 
