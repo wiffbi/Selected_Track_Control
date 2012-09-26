@@ -43,7 +43,7 @@ class GlobalControl(Control):
 			
 			("scrub_by", self.scrub_by),
 			("scrub_forward", lambda value, mode, status : self.scrub_by(settings.scrub_increment, MIDI.RELATIVE_TWO_COMPLIMENT, status)),
-			("scrub_rewind", lambda value, mode, status : self.scrub_by(128-settings.scrub_increment, MIDI.RELATIVE_TWO_COMPLIMENT, status)),
+			("scrub_rewind", lambda value, mode, status : self.scrub_by(-settings.scrub_increment, MIDI.RELATIVE_TWO_COMPLIMENT, status)),
 			
 			("undo", self.undo),
 			("redo", self.redo),
