@@ -40,6 +40,9 @@ class GlobalControl(Control):
 			("play_stop", self.play_stop),
 			("play_pause", self.play_pause),
 			("play_selection", self.play_selection),
+			("stop_playing", self.stop_playing),
+			("start_playing", self.start_playing),
+			("continue_playing", self.continue_playing),
 			
 			("scrub_by", self.scrub_by),
 			("scrub_forward", lambda value, mode, status : self.scrub_by(settings.scrub_increment, MIDI.RELATIVE_TWO_COMPLIMENT, status)),
@@ -79,6 +82,20 @@ class GlobalControl(Control):
 	def scrub_by(self, value, mode, status):
 		self.song.scrub_by(value)
 
+	def stop_playing(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value: # ignore 0 values from CC-pads
+			return
+		self.song.stop_playing()
+	def start_playing(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value: # ignore 0 values from CC-pads
+			return
+		self.song.start_playing()
+	def continue_playing(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value: # ignore 0 values from CC-pads
+			return
+		self.song.continue_playing()
+
+
 	
 	def play_stop(self, value, mode, status):
 		if status == MIDI.CC_STATUS and not value: # ignore 0 values from CC-pads
@@ -99,10 +116,10 @@ class GlobalControl(Control):
 	def play_selection(self, value, mode, status):
 		if status == MIDI.CC_STATUS and not value: # ignore 0 values from CC-pads
 			return
-		if self.song.is_playing:
-			self.song.stop_playing()
-		else:
-			self.song.play_selection()
+		#if self.song.is_playing:
+		#	self.song.stop_playing()
+		#else:
+		self.song.play_selection()
 	
 	def undo(self, value, mode, status):
 		if status == MIDI.CC_STATUS and not value:

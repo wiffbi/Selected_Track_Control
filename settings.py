@@ -296,6 +296,9 @@ midi_mapping = {
 	"play_stop": Note(20),
 	"play_pause": Note(21),
 	"play_selection": Note(24),
+	"stop_playing": Note(27),
+	"start_playing": Note(28),
+	"continue_playing": Note(29),
 	
 	# global arrangement scrubbing
 	"scrub_by": CC(90),
