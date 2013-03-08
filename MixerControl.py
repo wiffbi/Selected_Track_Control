@@ -106,7 +106,13 @@ class MixerControl(Control):
 	
 	
 	def get_tracks(self):
-		return self.song.tracks + self.song.return_tracks
+		# this does not work in Live 9 as tracks are now of an object of type "Vector"
+		# manually join the tracks and return_tracks into one list
+		#return self.song.tracks + self.song.return_tracks
+		tracks = [track for track in self.song.tracks]
+		for track in self.song.return_tracks:
+			tracks.append(track)
+		return tracks
 	
 	
 	# arming a track inside this callback does not work :(
