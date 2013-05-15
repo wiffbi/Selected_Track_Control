@@ -1,7 +1,8 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.2.8 – released Sept 26, 2012.
+Current version is 1.2.9 – released May 15, 2013.  
+Compatible with Live 7,8 and 9
 
 
 Control the currently selected track via common MIDI messages
@@ -40,7 +41,7 @@ see License.txt
 
 System Requirements
 -------------------
-Ableton Live 7 (some features require 8)
+Ableton Live 7 (some features require 8 or 9)
 
 
 
@@ -82,6 +83,11 @@ You can change them there to match your needs, but be careful not to use the sam
 
 Changelog
 ---------
+
+### Version 1.2.9 (released May 15, 2013) ###
+
+Added compatibility for Live 9
+
 
 ### Version 1.2.8 (released Sept 26, 2012) ###
 
