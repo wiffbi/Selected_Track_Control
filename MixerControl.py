@@ -69,6 +69,7 @@ class MixerControl(Control):
 			
 			("crossfader", self.set_crossfader),
 			("cue_volume", self.set_cue_volume),
+			("master_volume", self.set_master_volume),
 			
 			("volume", self.set_volume),
 			("pan", self.set_pan)
@@ -234,7 +235,15 @@ class MixerControl(Control):
 	
 	
 	def set_volume(self, value, mode, status):
-		param = self.song.view.selected_track.mixer_device.volume
+		self._set_volume(self.song.view.selected_track.mixer_device.volume, value, mode)
+#		param = self.song.view.selected_track.mixer_device.volume
+#		if mode == MIDI.ABSOLUTE:
+#			param.value = value/127.0
+#		else:
+#			param.value = max(0.0, min(1.0, param.value + (value/200.0)))
+
+	# _set_volume can be used to either set volume-parameter of mixer or cue_volume of master track's mixer
+	def _set_volume(self, param, value, mode):
 		if mode == MIDI.ABSOLUTE:
 			param.value = value/127.0
 		else:
@@ -326,13 +335,11 @@ class MixerControl(Control):
 	
 	
 	
-	
+	def set_master_volume(self, value, mode, status):
+		self._set_volume(self.song.master_track.mixer_device.volume, value, mode)
+
 	def set_cue_volume(self, value, mode, status):
-		param = self.song.master_track.mixer_device.cue_volume
-		if mode == MIDI.ABSOLUTE:
-			param.value = value/127.0
-		else:
-			param.value = max(0.0, min(1.0, param.value + (value/200.0)))
+		self._set_volume(self.song.master_track.mixer_device.cue_volume, value, mode)
 	
 	def set_crossfader(self, value, mode, status):
 		param = self.song.master_track.mixer_device.crossfader

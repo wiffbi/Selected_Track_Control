@@ -285,6 +285,7 @@ midi_mapping = {
 	"assign_crossfade_none": Note(93),
 	"crossfader": (CC(75), CC(76, ABSOLUTE)),
 	"cue_volume": (CC(77), CC(78, ABSOLUTE)),
+	"master_volume": (CC(80), CC(81, ABSOLUTE)),
 	
 	
 	# global controls
