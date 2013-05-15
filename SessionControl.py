@@ -102,12 +102,11 @@ class SessionControl(Control):
 	
 	
 	def get_all_tracks(self, only_visible = False):
-		if not only_visible:
-			return self.song.tracks + self.song.return_tracks + (self.song.master_track, )
 		tracks = []
 		for track in self.song.tracks:
-			if track.is_visible:
+			if not only_visible or track.is_visible:
 				tracks.append(track)
+				
 		for track in self.song.return_tracks:
 			tracks.append(track)
 		tracks.append(self.song.master_track)
