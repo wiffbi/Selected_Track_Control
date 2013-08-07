@@ -1,5 +1,6 @@
 import MIDI
 import settings
+import Live
 from Logging import log
 
 from Control import Control
@@ -52,7 +53,49 @@ class SessionControl(Control):
 			("prev_track", lambda value, mode, status: self.scroll_tracks(-1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
 			("next_track", lambda value, mode, status: self.scroll_tracks(1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
 			
-			("toggle_track_fold", self.toggle_track_fold)
+			("toggle_track_fold", self.toggle_track_fold),
+
+
+			# Live 9
+			("stop_all_clips_immediately", self.stop_all_clips_immediately),
+
+			("create_scene_at", self.create_scene_at), # creates scene at value of MIDI message
+			("create_scene_before", lambda value, mode, status: self.create_scene_at(0, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+			("create_scene_after", lambda value, mode, status: self.create_scene_at(1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+
+			("duplicate_scene", self.duplicate_scene), # duplicates scene at value of MIDI message
+			("duplicate_selected_scene", lambda value, mode, status: self.duplicate_scene(0, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+			
+			("capture_scene", self.capture_scene),
+			("capture_scene_except_selected", self.capture_scene_except_selected),
+			
+			("delete_scene", self.delete_scene),# deletes scene at value of MIDI message
+			("delete_selected_scene", lambda value, mode, status: self.delete_scene(0, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+
+			("duplicate_track", self.duplicate_track), # duplicates track at value of MIDI message
+			("duplicate_selected_track", lambda value, mode, status: self.duplicate_track(0, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+			
+			("create_midi_track_at", self.create_midi_track_at),
+			("create_midi_track_after", lambda value, mode, status: self.create_midi_track_at(1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+			("create_midi_track_before", lambda value, mode, status: self.create_midi_track_at(0, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+
+			("create_audio_track_at", self.create_audio_track_at),
+			("create_audio_track_after", lambda value, mode, status: self.create_audio_track_at(1, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+			("create_audio_track_before", lambda value, mode, status: self.create_audio_track_at(0, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+
+			("create_return_track", self.create_return_track),
+
+			("delete_track", self.delete_track),
+			("delete_selected_track", lambda value, mode, status: self.delete_track(0, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+			
+			("delete_device", self.delete_device), # delete device at value of MIDI message on current track
+			("delete_selected_device", lambda value, mode, status: self.delete_device(0, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+
+			("duplicate_clip_slot", self.duplicate_clip_slot),
+			("duplicate_selected_clip_slot", lambda value, mode, status: self.duplicate_clip_slot(0, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
+
+			("delete_clip", self.delete_clip), # delete clip in clipslot at value of MIDI message on current track
+			("delete_selected_clip", lambda value, mode, status: self.delete_clip(0, MIDI.RELATIVE_TWO_COMPLIMENT, MIDI.CC_STATUS)),
 		)
 	
 	
@@ -339,3 +382,154 @@ class SessionControl(Control):
 		if status == MIDI.CC_STATUS and not value:
 			return
 		self.fire_clip_slot_by_delta(-1, True)
+
+
+
+
+	# Live 9
+
+	# helper function
+	def _get_index_of_element(self, element, elements, d_value = 0):
+		max_elements = len(elements)
+		for i in range(max_elements):
+			if element == elements[i]:
+				return max((0, min(i+d_value, max_elements)))
+		# if element not found, return end position?
+		return max_elements
+		# cannot use .index because Live 9 changed it to type "Vector"
+		#return max((0, min(elements.index(element)+d_value, max_elements)))
+		
+
+	def get_scene_index(self, value, mode, status):
+		if mode == MIDI.ABSOLUTE:
+			# get scene at index given in value 
+			# if value to big then get last possible
+			# usually values in absolute mode are greater 0, but make sure they are
+			return max(0, min(value, len(self.song.scenes)))
+		else:
+			# relative to selected scene
+			return self._get_index_of_element(self.song.view.selected_scene, self.song.scenes, value)
+
+	def get_track_index(self, value, mode, status):
+		if mode == MIDI.ABSOLUTE:
+			# get track at index given in value 
+			# if value to big then get last possible
+			# usually values in absolute mode are greater 0, but make sure they are
+			return min(value, len(self.song.tracks))
+		else:
+			# relative to selected track
+			return self._get_index_of_element(self.song.view.selected_track, self.song.tracks, value)
+
+	def get_clipslot_index(self, value, mode, status):
+		if mode == MIDI.ABSOLUTE:
+			# get clip_slot at index given in value 
+			# if value to big then get last possible
+			# usually values in absolute mode are greater 0, but make sure they are
+			return min(value, len(self.song.view.selected_track.clip_slots))
+		else:
+			# relative to selected clip_slot
+			return self._get_index_of_element(self.song.view.highlighted_clip_slot, self.song.view.selected_track.clip_slots, value)
+		
+#	def get_device_index(self, value, mode, status):
+#		track = self.song.view.selected_track
+#		if mode == MIDI.ABSOLUTE:
+#			return min(value, len(track.devices))
+#		else:
+#			return self._get_index_of_element(track.view.selected_device, track.devices, value)
+
+
+
+	def stop_all_clips_immediately(self, value, mode, status):
+		self.song.stop_all_clips(False)
+
+	def create_scene_at(self, value, mode, status):
+		self.song.create_scene(self.get_scene_index(value, mode, status))
+
+	def duplicate_scene(self, value, mode, status):
+		self.song.duplicate_scene(self.get_scene_index(value, mode, status))
+		
+	def capture_scene(self, value, mode, status):
+		self.song.capture_and_insert_scene(Live.Song.CaptureMode.all)
+
+	def capture_scene_except_selected(self, value, mode, status):
+		self.song.capture_and_insert_scene(Live.Song.CaptureMode.all_except_selected)
+
+	def delete_scene(self, value, mode, status):
+		self.song.delete_scene(self.get_scene_index(value, mode, status))
+
+
+
+
+	def duplicate_track(self, value, mode, status):
+		self.song.duplicate_track(self.get_track_index(value, mode, status))
+
+
+	def create_midi_track_at(self, value, mode, status):
+		self.song.create_midi_track(self.get_track_index(value, mode, status))
+
+	def create_audio_track_at(self, value, mode, status):
+		self.song.create_audio_track(self.get_track_index(value, mode, status))
+
+	def create_return_track(self, value, mode, status):
+		self.song.create_return_track()
+
+	def delete_track(self, value, mode, status):
+		# works with grouped tracks too
+		self.song.delete_track(self.get_track_index(value, mode, status))
+
+
+
+	def _get_device_index_recursive(self, device, container):
+		max_elements = len(container.devices)
+		for i in range(max_elements):
+			d = container.devices[i]
+			if device == d:
+				return (container, i, None)
+			elif d.can_have_chains:
+				for chain in d.chains:
+					result = self._get_device_index_recursive(device, chain)
+					if result:
+						return (result[0], result[1], d)
+		return None
+
+	def delete_device(self, value, mode, status):
+		container = self.song.view.selected_track
+		if mode == MIDI.ABSOLUTE:
+			index = min(value, len(container.devices))
+		else:
+			# find selected device in tracks and device racks (chains)
+			result = self._get_device_index_recursive(container.view.selected_device, container)
+			if not result:
+				return
+			container, index, parent_device = result # container is either track or chain
+
+		
+		container.delete_device(index)
+		# select previous or parent device (mimics default behaviour in GUI)
+		if index > 0:
+			index-= 1
+		if len(container.devices) > index:
+			self.song.view.select_device(container.devices[index])
+		elif parent_device:
+			# container is a chain, therefore ther is a parent_device (device rack)
+			self.song.view.select_device(parent_device)
+
+		#self.song.view.selected_track.delete_device(self.get_device_index(value, mode, status))
+		
+		
+
+	def duplicate_clip_slot(self, value, mode, status):
+		index = self.get_clipslot_index(value, mode, status)
+		clip_slot = self.song.view.selected_track.clip_slots[index]
+		if clip_slot.has_clip:
+			# duplicate and select duplicated clipslot
+			self.song.view.selected_track.duplicate_clip_slot(index)
+			self.song.view.highlighted_clip_slot = self.song.view.selected_track.clip_slots[index+1]
+		
+
+	def delete_clip(self, value, mode, status):
+		clip_slot = self.song.view.selected_track.clip_slots[self.get_clipslot_index(value, mode, status)]
+		if clip_slot.has_clip:
+			clip_slot.delete_clip()
+		
+

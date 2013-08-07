@@ -377,4 +377,37 @@ midi_mapping = {
 	"toggle_detail_clip_device": Note(77),
 	"toggle_detail_clip": Note(78),
 	"toggle_detail_device": Note(79),
+
+
+
+
+
+	# Live 9
+	"stop_all_clips_immediately": Note(127),
+	#"create_scene_at": CC(<INT>, ABSOLUTE),# depending on value
+	"create_scene_before": Note(95),
+	"create_scene_after": Note(96),
+	#"duplicate_scene": CC(<INT>, ABSOLUTE),# depending on value
+	"duplicate_selected_scene": Note(97),
+	"capture_scene": Note(98),
+	"capture_scene_except_selected": Note(99),
+	#"delete_scene": CC(<INT>, ABSOLUTE), # depending on value
+	"delete_selected_scene": Note(100),
+	#"duplicate_track": CC(<INT>, ABSOLUTE), # depending on value
+	"duplicate_selected_track": Note(101),
+	#"create_midi_track_at": CC(<INT>, ABSOLUTE), # depending on value
+	"create_midi_track_after": Note(102),
+	#"create_midi_track_before": Note(),
+	#"create_audio_track_at": CC(<INT>, ABSOLUTE), # depending on value
+	"create_audio_track_after": Note(103),
+	#"create_audio_track_before": Note(),
+	"create_return_track": Note(104),
+	#"delete_track": CC(<INT>, ABSOLUTE), # depending on value
+	"delete_selected_track": Note(105),
+	#"delete_device": CC(<INT>, ABSOLUTE), # depending on value
+	"delete_selected_device": Note(106),
+	#"duplicate_clip_slot": CC(<INT>, ABSOLUTE), # depending on value
+	"duplicate_selected_clip_slot": Note(107),
+	#"delete_clip": CC(<INT>, ABSOLUTE), # depending on value
+	"delete_selected_clip": Note(108)
 }
