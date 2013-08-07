@@ -78,27 +78,36 @@ class DeviceControl(Control):
 	
 	def auto_select_device(self):
 		select_device = None
-		index = -1
-		# loop through devices
-		for device in self.song.view.selected_track.devices:
-			i = 1
-			for name in settings.auto_select_device:
-				if device.name == name:
-					if i < index or index == -1:
-						index = i
-						select_device = device
-						if index == 0:
-							break
-				elif not index == -1 and i > index:
+		devices = self.song.view.selected_track.devices
+		try:
+			# assume settings.auto_select_device is an integer
+			index = settings.auto_select_device
+			index-= 1 # make it a zero-based index - this will throw a TypeError if no int
+			index = min(index, len(devices)-1) # if index to big, select last device
+			self.song.view.select_device(devices[index])
+		except TypeError, e:
+    		# settings.auto_select_device is not int, so assume String
+			index = -1
+			# loop through devices
+			for device in devices:
+				i = 1
+				for name in settings.auto_select_device:
+					if device.name == name:
+						if i < index or index == -1:
+							index = i
+							select_device = device
+							if index == 0:
+								break
+					elif not index == -1 and i > index:
+						break
+						
+					i = i+1
+				
+				if index == 0:
 					break
-					
-				i = i+1
-			
-			if index == 0:
-				break
-		if select_device:
-			#log("select %s" % select_device.name)
-			self.song.view.select_device(device)
+			if select_device:
+				#log("select %s" % select_device.name)
+				self.song.view.select_device(device)
 		
 	
 	

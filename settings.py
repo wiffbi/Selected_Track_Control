@@ -139,8 +139,9 @@ device_bestof = False
 #	"Looper": (2,1,0),
 #}
 
-# either a list of Device-names or False
+# either a list of Device-names or integer or Boolean (True will select first device)
 # automatically selects the device if available when switched to the track
+# to select last device set to a big int - at least as big as max number of devices per track, e.g. 255
 auto_select_device = False
 #auto_select_device = ["Looper", "Impulse", "Simpler"]
 
