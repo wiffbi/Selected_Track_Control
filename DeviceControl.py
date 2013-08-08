@@ -31,8 +31,8 @@ class DeviceControl(Control):
 		#if "reset_device_bank" in settings:
 		#	TODO: add listener to tracks if selected device has changed
 		
-		if settings.auto_select_device:
-			self.song.view.add_selected_track_listener(self.auto_select_device)
+		#if settings.auto_select_device:
+		self.song.view.add_selected_track_listener(self.auto_select_device)
 		
 		if settings.device_bestof:
 			# we have best-of parameters for devices => use these parameters first, then the rest
@@ -77,6 +77,11 @@ class DeviceControl(Control):
 	
 	
 	def auto_select_device(self):
+		if not settings.auto_select_device:
+			# one needs to select the selected device ot make it the appointed device (blue hand)!
+			self.song.view.select_device(self.song.view.selected_track.view.selected_device)
+			return
+
 		select_device = None
 		devices = self.song.view.selected_track.devices
 		try:
