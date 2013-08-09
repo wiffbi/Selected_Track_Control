@@ -77,13 +77,19 @@ class DeviceControl(Control):
 	
 	
 	def auto_select_device(self):
-		if not settings.auto_select_device:
-			# one needs to select the selected device ot make it the appointed device (blue hand)!
-			self.song.view.select_device(self.song.view.selected_track.view.selected_device)
-			return
 
 		select_device = None
 		devices = self.song.view.selected_track.devices
+
+		if not settings.auto_select_device:
+			# one needs to select the selected device ot make it the appointed device (blue hand)!
+			select_device = self.song.view.selected_track.view.selected_device
+			if not select_device and len(devices):
+				select_device = devices[0]
+			if select_device:
+				self.song.view.select_device(select_device)
+			return
+
 		try:
 			# assume settings.auto_select_device is an integer
 			index = settings.auto_select_device
