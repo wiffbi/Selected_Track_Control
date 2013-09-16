@@ -356,15 +356,6 @@ midi_mapping = {
 		(CC(38), CC(46, ABSOLUTE)),
 		(CC(39), CC(47, ABSOLUTE)),
 		(CC(40), CC(48, ABSOLUTE)),
-
-		(CC(91), CC(99, ABSOLUTE)),
-		(CC(92), CC(100, ABSOLUTE)),
-		(CC(93), CC(101, ABSOLUTE)),
-		(CC(94), CC(102, ABSOLUTE)),
-		(CC(95), CC(103, ABSOLUTE)),
-		(CC(96), CC(104, ABSOLUTE)),
-		(CC(97), CC(105, ABSOLUTE)),
-		(CC(98), CC(106, ABSOLUTE)),
 	),
 	"reset_device_params": (
 		Note(52),
