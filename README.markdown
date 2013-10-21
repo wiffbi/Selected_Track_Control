@@ -1,7 +1,7 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.2.9 – released May 15, 2013.  
+Current version is 1.2.10 – released Oct 21, 2013.  
 Compatible with Live 7,8 and 9
 
 
@@ -83,6 +83,11 @@ You can change them there to match your needs, but be careful not to use the sam
 
 Changelog
 ---------
+
+### Version 1.2.10 (released Oct 21, 2013) ###
+
+Added compatibility for clip launch modes (especially "Gate")
+
 
 ### Version 1.2.9 (released May 15, 2013) ###
 

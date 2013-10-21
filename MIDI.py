@@ -63,6 +63,9 @@ class MIDICommand:
 class Note (MIDICommand):
 	def __init__(self, note, channel = DEFAULT_CHANNEL):
 		MIDICommand.__init__(self, note, ABSOLUTE, NOTEON_STATUS, channel)
+class NoteOff (MIDICommand):
+	def __init__(self, note, channel = DEFAULT_CHANNEL):
+		MIDICommand.__init__(self, note, ABSOLUTE, NOTEOFF_STATUS, channel)
 class CC (MIDICommand):
 	def __init__(self, cc, mode = RELATIVE_TWO_COMPLIMENT, channel = DEFAULT_CHANNEL):
 		MIDICommand.__init__(self, cc, mode, CC_STATUS, channel)

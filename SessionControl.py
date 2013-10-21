@@ -314,10 +314,17 @@ class SessionControl(Control):
 	
 	
 	def fire_selected_clip_slot(self, value, mode, status):
-		if status == MIDI.CC_STATUS and not value:
-			return
+		# to support launch mode "Gate" with CC launchers, one has to react to CC with value 0 as well
+		# comment next two lines to support "Gate" launch mode on clips with CC
+		#if status == MIDI.CC_STATUS and not value:
+		#	return
 		if self.song.view.highlighted_clip_slot:
-			self.song.view.highlighted_clip_slot.fire()
+			if value <= 0 or status == MIDI.NOTEOFF_STATUS:
+				value = 0
+			else:
+				value = 1
+
+			self.song.view.highlighted_clip_slot.set_fire_button_state(value) #fire()
 	
 	def toggle_selected_clip_slot(self, value, mode, status):
 		clip_slot = self.song.view.highlighted_clip_slot

@@ -263,7 +263,7 @@ midi_mapping = {
 	"first_track": Note(46),
 	"last_track": Note(47),
 	
-	"play_selected_clip": Note(43),
+	"play_selected_clip": (Note(43), NoteOff(43)), # listen to "Note Off" as well, to support clip-launch mode "Gate"
 	"toggle_selected_clip": Note(73),
 	"play_next_clip": Note(45),
 	"play_prev_clip": Note(41),
