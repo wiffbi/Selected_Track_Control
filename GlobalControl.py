@@ -52,6 +52,9 @@ class GlobalControl(Control):
 			("redo", self.redo),
 			
 			("toggle_track_collapsed", self.toggle_track_collapsed),
+
+			("groove_amount", self.set_groove_amount),
+			("re_enable_automation", self.re_enable_automation)
 		)
 	
 	def toggle_track_collapsed(self, value, mode, status):
@@ -193,3 +196,12 @@ class GlobalControl(Control):
 			return
 		if self.song.tap_tempo:
 			self.song.tap_tempo()
+
+	def set_groove_amount(self, value, mode, status):
+		if mode == MIDI.ABSOLUTE:
+			self.song.groove_amount = (value/127.0)*1.3
+		else:
+			self.song.groove_amount = max(0, min(self.song.groove_amount + value/100.0, 1.3))
+
+	def re_enable_automation(self, value, mode, status):
+		self.song.re_enable_automation()

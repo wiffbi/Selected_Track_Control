@@ -294,6 +294,8 @@ midi_mapping = {
 	"tap_tempo": Note(86), # attention: Live 8 only!
 	"tempo_increase": Note(87),
 	"tempo_decrease": Note(88),
+
+	"groove_amount": CC(120),
 	
 	"play_stop": Note(20),
 	"play_pause": Note(21),
@@ -409,5 +411,7 @@ midi_mapping = {
 	#"duplicate_clip_slot": CC(<INT>, ABSOLUTE), # depending on value
 	"duplicate_selected_clip_slot": Note(107),
 	#"delete_clip": CC(<INT>, ABSOLUTE), # depending on value
-	"delete_selected_clip": Note(108)
+	"delete_selected_clip": Note(108),
+
+	"re_enable_automation": Note(109)
 }
