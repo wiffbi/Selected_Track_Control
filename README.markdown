@@ -1,7 +1,7 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.2.10 – released Oct 21, 2013.  
+Current version is 1.3.3 – released Oct 21, 2013.  
 Compatible with Live 7,8 and 9
 
 
@@ -84,9 +84,24 @@ You can change them there to match your needs, but be careful not to use the sam
 Changelog
 ---------
 
-### Version 1.2.10 (released Oct 21, 2013) ###
+### Version 1.3.3 (released Oct 21, 2013) ###
 
 Added compatibility for clip launch modes (especially "Gate")
+
+
+### Version 1.3.2 (released Aug 9, 2013) ###
+
+Fixed blue-hand for initial device selection
+
+
+### Version 1.3.1 (released Aug 8, 2013) ###
+
+Fixed blue-hand when changing tracks - it is now always the selected device
+
+
+### Version 1.3.0 (released Aug 7, 2013) ###
+
+Added Live 9 API-features such as create/duplicate/delete clip/track/scene
 
 
 ### Version 1.2.9 (released May 15, 2013) ###
