@@ -294,6 +294,8 @@ midi_mapping = {
 	"tap_tempo": Note(86), # attention: Live 8 only!
 	"tempo_increase": Note(87),
 	"tempo_decrease": Note(88),
+	"nudge_down": (Note(110), NoteOff(110)),
+	"nudge_up": (Note(111), NoteOff(111)),
 
 	"groove_amount": CC(120),
 	

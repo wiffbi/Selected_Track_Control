@@ -54,6 +54,10 @@ class GlobalControl(Control):
 			("toggle_track_collapsed", self.toggle_track_collapsed),
 
 			("groove_amount", self.set_groove_amount),
+			("nudge_down", self.nudge_down),
+			("nudge_up", self.nudge_up),
+
+			# Live 9
 			("re_enable_automation", self.re_enable_automation)
 		)
 	
@@ -202,6 +206,28 @@ class GlobalControl(Control):
 			self.song.groove_amount = (value/127.0)*1.3
 		else:
 			self.song.groove_amount = max(0, min(self.song.groove_amount + value/100.0, 1.3))
+
+	
+	def nudge_up(self, value, mode, status):
+		if status == MIDI.NOTEON_STATUS:
+			value = 1
+		elif value <= 0 or status == MIDI.NOTEOFF_STATUS:
+			value = 0
+		else:
+			value = 1
+
+		self.song.nudge_up = value
+	
+	def nudge_down(self, value, mode, status):
+		if status == MIDI.NOTEON_STATUS:
+			value = 1
+		elif value <= 0 or status == MIDI.NOTEOFF_STATUS:
+			value = 0
+		else:
+			value = 1
+
+		self.song.nudge_down = value
+
 
 	def re_enable_automation(self, value, mode, status):
 		self.song.re_enable_automation()
