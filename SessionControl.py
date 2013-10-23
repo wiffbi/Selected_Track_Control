@@ -319,7 +319,9 @@ class SessionControl(Control):
 		#if status == MIDI.CC_STATUS and not value:
 		#	return
 		if self.song.view.highlighted_clip_slot:
-			if value <= 0 or status == MIDI.NOTEOFF_STATUS:
+			if status == MIDI.NOTEON_STATUS:
+				value = 1
+			elif value <= 0 or status == MIDI.NOTEOFF_STATUS:
 				value = 0
 			else:
 				value = 1
