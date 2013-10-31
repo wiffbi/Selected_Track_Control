@@ -28,8 +28,11 @@ class DeviceControl(Control):
 			self.params_per_bank = 8
 		self.max_banks = int(math.ceil(128.0/self.params_per_bank))
 		
+		
 		#if "reset_device_bank" in settings:
-		#	TODO: add listener to tracks if selected device has changed
+		# add listener to receive notifications, if track has changed
+		# add listener to track if selected device has changed => reset bank?
+		
 		
 		#if settings.auto_select_device:
 		self.song.view.add_selected_track_listener(self.auto_select_device)
@@ -71,6 +74,10 @@ class DeviceControl(Control):
 			
 			
 			("select_instrument", self.select_instrument),
+
+			("lock_to_selected_device", self.lock_to_selected_device),
+			("unlock_from_device", self.unlock_from_device),
+			("toggle_lock_to_device", self.toggle_lock),
 		)
 	
 	
@@ -120,21 +127,35 @@ class DeviceControl(Control):
 				#log("select %s" % select_device.name)
 				self.song.view.select_device(device)
 		
-	
-	
+	def lock_to_selected_device(self, value, mode, status):
+		self.c_instance.toggle_lock()
+		if not self._locked_to_device:
+			self.c_instance.toggle_lock()
+		#self.selected_track_controller.lock_to_device(self._device)
+
+	def unlock_from_device(self, value, mode, status):
+		#self.selected_track_controller.unlock_from_device(self._device)
+		if self._locked_to_device:
+			self.c_instance.toggle_lock()
+
+	def toggle_lock(self, value, mode, status):
+		self.c_instance.toggle_lock()
+
+
 	def set_device(self, device):
-		self._device = device
+		if not self._locked_to_device:
+			self._device = device
 		#log("Device '%s' has the following Parameters:" % device.name)
 		#for i in range(len(device.parameters)):
 		#	log("%s - %s (%s; %s - %s : %s)" % (i, device.parameters[i].name, device.parameters[i].value, device.parameters[i].min, device.parameters[i].max, device.parameters[i].is_quantized))
 	
 	def set_lock_to_device(self, lock, device):
 		assert isinstance(lock, type(False))
-		assert (lock is not self._locked_to_device)
+		#assert (lock is not self._locked_to_device)
 		if lock:
-			self.set_device(device)
-		else:
-			assert (device == self._device)
+			self._device = device
+		#else:
+		#	assert (device == self._device)
 		
 		self._locked_to_device = lock
 	

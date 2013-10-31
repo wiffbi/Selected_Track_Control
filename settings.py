@@ -371,6 +371,9 @@ midi_mapping = {
 		Note(58),
 		Note(59),
 	),
+	"lock_to_selected_device": Note(112),
+	"unlock_from_device": Note(113),
+	"toggle_lock_to_device": Note(114),
 	
 	
 	
