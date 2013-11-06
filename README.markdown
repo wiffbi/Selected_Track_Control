@@ -1,7 +1,7 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.3.4 – released Oct 31, 2013.  
+Current version is 1.3.5 – released Nov 4, 2013.  
 Compatible with Live 7,8 and 9
 
 
@@ -83,6 +83,13 @@ You can change them there to match your needs, but be careful not to use the sam
 
 Changelog
 ---------
+
+
+### Version 1.3.5 (released Nov 4, 2013) ###
+
+Added arm flip (Note 115)
+Added solo flip (Note 116)
+
 
 ### Version 1.3.4 (released Oct 31, 2013) ###
 

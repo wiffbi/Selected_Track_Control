@@ -40,12 +40,15 @@ class MixerControl(Control):
 			("arm", self.toggle_arm),
 			("arm_exclusive", self.toggle_arm_exclusive),
 			("arm_kill", self.arm_kill),
+			("arm_flip", self.arm_flip),
 			
 			("toggle_auto_arm", self.toggle_auto_arm),
 			
 			("solo", self.toggle_solo),
 			("solo_exclusive", self.toggle_solo_exclusive),
 			("solo_kill", self.solo_kill),
+			("solo_flip", self.solo_flip),
+
 			("mute", self.toggle_mute),
 			("mute_exclusive", self.toggle_mute_exclusive),
 			("mute_kill", self.mute_kill),
@@ -180,6 +183,12 @@ class MixerControl(Control):
 			if t.can_be_armed:
 				t.arm = False
 	
+	def arm_flip(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
+			return
+		for t in self.song.tracks:
+			if t.can_be_armed:
+				t.arm = not t.arm
 	
 	def toggle_solo_track(self, track, exclusive):
 		track.solo = not track.solo
@@ -203,7 +212,12 @@ class MixerControl(Control):
 			return
 		for t in self.get_tracks():
 			t.solo = False
-	
+
+	def solo_flip(self, value, mode, status):
+		if status == MIDI.CC_STATUS and not value:
+			return
+		for t in self.get_tracks():
+			t.solo = not t.solo
 	
 	def toggle_mute_track(self, track, exclusive):
 		track.mute = not track.mute
