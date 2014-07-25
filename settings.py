@@ -420,5 +420,7 @@ midi_mapping = {
 	#"delete_clip": CC(<INT>, ABSOLUTE), # depending on value
 	"delete_selected_clip": Note(108),
 
-	"re_enable_automation": Note(109)
+	"re_enable_automation": Note(109),
+	"arrangement_overdub": Note(117),
+	"session_automation_record": Note(118)
 }

@@ -58,7 +58,9 @@ class GlobalControl(Control):
 			("nudge_up", self.nudge_up),
 
 			# Live 9
-			("re_enable_automation", self.re_enable_automation)
+			("re_enable_automation", self.re_enable_automation),
+			("arrangement_overdub", self.arrangement_overdub),
+			("session_automation_record", self.session_automation_record)
 		)
 	
 	def toggle_track_collapsed(self, value, mode, status):
@@ -231,3 +233,9 @@ class GlobalControl(Control):
 
 	def re_enable_automation(self, value, mode, status):
 		self.song.re_enable_automation()
+
+	def arrangement_overdub(self, value, mode, status):
+		self.song.arrangement_overdub = not self.song.arrangement_overdub
+
+	def session_automation_record(self, value, mode, status):
+		self.song.session_automation_record = not self.song.session_automation_record
