@@ -1,7 +1,7 @@
 Selected Track Control for Ableton Live
 =======================================
 
-Current version is 1.3.5 – released Nov 4, 2013.  
+Current version is 1.3.6 – released July 25, 2014.  
 Compatible with Live 7,8 and 9
 
 
@@ -83,6 +83,12 @@ You can change them there to match your needs, but be careful not to use the sam
 
 Changelog
 ---------
+
+### Version 1.3.6 (released July 25, 2014) ###
+
+Added Live 9 features
+- toggle arrangement_overdub with Note(117)
+- toggle session_automation_record with Note(118)
 
 
 ### Version 1.3.5 (released Nov 4, 2013) ###
